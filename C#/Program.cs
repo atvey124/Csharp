@@ -4,14 +4,14 @@
 int integer = 1245; // цело численные
 bool boolian = false; // логические значения true false 
 char character = '!'; // знаки,пишутся внутри ''
-double double = 5.55; // дробные 
-string string = "Hi"; // строки
-Console.WriteLine(a);
-Console.WriteLine(b);
-Console.WriteLine(c);
-Console.WriteLine(e);
-Console.WriteLine(h);
-
+double double1 = 5.55; // дробные 
+string string1 = "Hi"; // строки
+Console.WriteLine(integer);
+Console.WriteLine(boolian);
+Console.WriteLine(character);
+Console.WriteLine(double1);
+Console.WriteLine(string1);
+    
 
 // бинарные операции 
 
