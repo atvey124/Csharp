@@ -68,7 +68,16 @@ Console.WriteLine(index); // после цикла пишется то,что б
 
 
                                                                                         // методы
-int i = 10;                                                                                     
+int i = 1;
+                                                                                     
 Console.WriteLine(i); // данный метод позволяет вывести что-либо в терминал по вертикале
 Console.Write(i); // данный метод позволяет вывести что либо в терминал по горизонтали
 Console.Write(' '); // так же в данный метод можно вывести такой тип данных как char,можно вывести любой тип данных
+int index10 = 1;
+int n2 = 12;
+while (index10 <= n2)
+{
+    Console.Write(index10);
+    Console.Write(' ');
+    index10 = index10 + 1;
+}
