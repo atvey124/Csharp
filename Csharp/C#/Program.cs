@@ -88,11 +88,12 @@ while (index10 <= n2)
 Console.ReadLine(); // метод позволяющий вводить значения с терминала(input в python),тип данных после ввода по умолчанию string
 
 
-Console.WriteLine("Введите первое число,которое хотите возвести в квадрат");
+// небольшая задача с использованием Console.ReadLine(),по нахождению принадлежности второго числа к квадрату первого
+Console.Write("Введите первое число,которое хотите возвести в квадрат: "); 
 
 int convert_num1 = Convert.ToInt32(Console.ReadLine()); // Convert.ToInt32 метод позволяющий конвертировать переменные в другой тип данных,в конкретном примере в тип данных 'int',где 32 обозначает разрядность
 
-Console.WriteLine("Введите второе число,которое хотите проверить на квадрат первого");
+Console.Write("Введите второе число,которое хотите проверить на квадрат первого: ");
 
 int convert_num2 = Convert.ToInt32(Console.ReadLine()); // в параметр конвертора можно сразу передать Console.WriteLine()
 if (convert_num1 * convert_num1 == convert_num2)
@@ -103,3 +104,51 @@ else
 {
     Console.WriteLine("Число 1 не является квадратом числа 2");
 }
+
+
+int test = 43!; // знак '!' после строки кода,но перед ';' - позволяет убрать пунктирную линию,обозначающую неверную структуру кода
+Console.WriteLine(test);
+
+
+// int.Parse() так же метод для конвертации в другой тип данных,где вместо int можно задать другой тип данных
+
+// так та же задача будет выглядеть,но уже с этим методом
+
+
+Console.Write("Введите первое число,которое хотите возвести в квадрат: "); 
+
+int test1 = int.Parse(Console.ReadLine()!);
+
+Console.Write("Введите второе число,которое хотите проверить на квадрат первого: ");
+
+int test2 = int.Parse(Console.ReadLine()!); 
+if (test1 * test1 == test2)
+{
+    Console.WriteLine("Число 1 является квадратом числа 2");
+}
+else
+{
+    Console.WriteLine("Число 1 не является квадратом числа 2");
+}
+
+// еще одна небольшая задача с использованием Parse
+Console.Write("Введите число N,между -N и N будут показаны все целые: ");
+int N_number = int.Parse(Console.ReadLine()!);
+int count = -N_number;
+while (count != N_number + 1)
+{   
+    Console.Write(count + " ");
+    count++;  // метод эквивалентный += в python,или же эквивалент count = count + 1   
+}
+
+
+// и еще одна задача с использованием конвертора To в данном случае ToString()
+int test3 = 543; 
+string Str_test3 = test3.ToString(); // перевод типа данных int в string 
+
+int sum_num2 = Str_test3[0] + Str_test3[-1]; // результат
+
+
+
+Console.WriteLine("Ответ: ");
+Console.Write(sum_num2);
