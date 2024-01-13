@@ -1,0 +1,5 @@
+C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\obj\Debug\net6.0\vscode project.csproj.AssemblyReference.cache
+C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\obj\Debug\net6.0\vscode project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\obj\Debug\net6.0\vscode project.AssemblyInfoInputs.cache
+C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\obj\Debug\net6.0\vscode project.AssemblyInfo.cs
+C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\obj\Debug\net6.0\vscode project.csproj.CoreCompileInputs.cache
