@@ -65,6 +65,19 @@ while (index <= N) // условие цикла так же должно быт�
 Console.WriteLine(index); // после цикла пишется то,что будет выполняться когда цикл будет прерван,в конкретном примере это не требуется
 
 
+// решение задачи на нахождение большего числа в массиве,используя цикл for
+int[] array100 = {234,54,5,5,45,45,45,5454545,54,54}; // объявление массива
+int max_array_num = array100[0];
+for(int j = 0; j < array100.Length;j++) // (int j = 10; - объявление переменной внутри цикла),(j < n; - условие цикла),(j++ - один шаг), переменная созданная внутри цикла 'for' - имеет ту же область определенния,что и сам цикл 'for'
+{
+    if (max_array_num < array100[j]) 
+    {
+        max_array_num = array100[j];
+    } // j++; в цикле for не используется поскольку пишется в аргументе цикла
+}
+Console.WriteLine("Цикл for - наибольшее число в массиве: " + max_array_num);
+
+
 
 
                                                                                         // методы
@@ -261,16 +274,89 @@ while ( i < array_num.Length)
 int[] array_dumbells = { 434,5454,5,45,4,54,5,45,4,54,54,54,54 };
 int i1 = 0;
 int max = array_dumbells[0];
-while (i < array_dumbells.Length)
+while (i1 < array_dumbells.Length)
 {
     if ( array_dumbells[i1] > max )
     {
-        max = array_dumbells[i1];
-        i++;  
+        max = array_dumbells[i1];  
     }
-    else
-    {
-        i++;
-    }
+    i1++;
 }
 Console.WriteLine("Самое большое число в массиве: " + max);
+
+
+// задача на нахождение большего числа и его индекса
+int[] array_dumbells1 = { 434,5454,565664,45,4,54,5,45,4,54,54,54,54 };
+int i2 = 0;
+int max1 = array_dumbells1[0];
+int max_index = array_dumbells1[0];
+while (i2 < array_dumbells1.Length)
+{
+    if ( array_dumbells1[i2] > max1 )
+    {
+        max1 = array_dumbells1[i2];
+        max_index = i2; 
+    }
+    i2++;
+}
+Console.WriteLine("Самое большое число в массиве: " + max1 +  " Самый больший индекс в массиве: " + max_index);
+
+
+// задача на нахождение большего и меньшего числа в массиве и их индекса
+int[] array_dumbells2 = { 434,5454,565664,45,1,54,5,45,4,54,54,54,54 };
+int i3 = 0;
+int max2 = array_dumbells2[0];
+int max_index1 = array_dumbells2[0];
+int min_num = array_dumbells2[0];
+int min_index = array_dumbells2[0];
+while (i3 < array_dumbells2.Length)
+{
+    if ( array_dumbells2[i3] > max2 )
+    {
+        max2 = array_dumbells2[i3];
+        max_index1 = i3;
+    }
+    if ( array_dumbells2[i3] < min_num)
+    {
+        min_num = array_dumbells2[i3];
+        min_index = i3;
+    }
+    i3++;
+}
+Console.WriteLine("Самое большое число в массиве: " + max2 +  " Самый больший индекс в массиве: " + max_index1);
+Console.WriteLine("Самое меньшее число в массиве: " + min_num + " Самый меньший индекс в массиве: " + min_index);
+
+
+// задача на нахождение второго по величине числа в массиве и его индекса
+int[] array_more = {43,54,65,245,543354422,53535353,3535,43434};
+int i4 = 0;
+int max_num = array_more[0];
+int max_num_index = 0;
+int second_max = array_more[0];
+int second_max_index = 0;
+while (i4 < array_more.Length)
+{
+    if ( array_more[i4] > max_num)
+    {
+        max_num = array_more[i4];
+        max_num_index = i4;
+    }
+    i4++;
+}  
+i4 = 0;
+while (i4 < array_more.Length)
+{
+    if (second_max != max_num)
+    {
+        if (array_more[i4] > second_max)
+        {
+            second_max = array_more[i4];
+            second_max_index = i4;
+            i4++;
+        }
+    }
+    i4++;
+}
+        
+Console.WriteLine("Самое большое число в массиве: " + max_num +  " Самый больший индекс в массиве: " + max_num_index);
+Console.WriteLine("Второе по величине число в массиве: " + second_max + " Второй по величине индекс в массиве: " + second_max_index);
