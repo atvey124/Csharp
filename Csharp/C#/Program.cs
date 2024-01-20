@@ -382,10 +382,10 @@ int [] array_10 = {54,654,87,43,768,5434,763,6586,8,67,6,4,32,5,7,2,1,0,2,2,2}; 
 int i11 = 0; // счетчик
 int current_index = 0; // счетчик сколько раз число всречается в массиве
 Console.Write("Введите число,которое есть в массиве: ");
-int num_people = int.Parse(Console.ReadLine()!); // конвертируем введенное пользователем число в тип данных(int)
+int num_people100 = int.Parse(Console.ReadLine()!); // конвертируем введенное пользователем число в тип данных(int)
 while (i11 < array_10.Length) // пока счетчик меньше длины массива,выполняем цикл
 {
-    if (num_people != array_10[i11]) // если число не равно введенному пользователем,добавляем +1 к счетчик
+    if (num_people100 != array_10[i11]) // если число не равно введенному пользователем,добавляем +1 к счетчик
     {
         i11++;
     }
@@ -727,43 +727,43 @@ input_massive(new_massive_acd); // вызов функции вывода
 
 
 // простая игра на угадывание чисел
-Random random = new();
-Random random2 = new();
-int random1 = random.Next(1,101);
-int random3 = random2.Next(1,1001);
-int attempt = 10;
-int attempt1 = 10;
-int win = 0;
-int remaining_attempt = 1;
-int remaining_attempt1 = 1;
-while(attempt != 0)
+Random random = new(); // создание рандомного числа
+Random random2 = new(); // создание рандомного числа для второй игры
+int random1 = random.Next(1,101); // диапазон случайных чисел передается в переменную
+int random3 = random2.Next(1,1001); // диапазон случайных чисел передается в переменную для второй игры
+int attempt = 10; // попытки в первой игре
+int attempt1 = 10; // попытки во второй игре
+int win = 0; // счетчик победы в первой игре
+int remaining_attempt = 1; // показывает с какой попытки ты выиграл
+int remaining_attempt1 = 1; // показывает с какой попытки ты выиграл во второй игре
+while(attempt != 0) // цикл который выполняется пока попыток не 0
 { 
-    if (attempt > 4)
+    if (attempt > 4) // если попыток больше четырых
     {
         Console.Write($"У тебя осталось {attempt} попыток, ");
         Console.Write("Введи загаданное число от 1 до 100: ");
     } 
-    else if ( attempt <= 4)
+    else if ( attempt <= 4) // если попыток меньше либо равно 4
     {
         Console.Write($"У тебя осталось {attempt} попытки, ");
         Console.Write("Введи загаданное число от 1 до 100: ");
 
     }
     
-    int num_people = int.Parse(Console.ReadLine()!);
-    if (num_people <= 100)
+    int num_people = int.Parse(Console.ReadLine()!); // ввод пользователем числа и конвертация его в int
+    if (num_people <= 100) // если пользователь ввел число в диапазоне от 1 до 100
     {
 
     
-        if (random1 != num_people)
+        if (random1 != num_people) // если число,что ввел пользователь не равно тому,что загадано
         {
-            if ( random1 > num_people)
+            if ( random1 > num_people) // если число,что ввел пользователь больше,того,что загадано
             {
                 Console.WriteLine("Загаданое число больше");
-                attempt--;
-                remaining_attempt++;
+                attempt--; // счетчик попыток убавляем на 1
+                remaining_attempt++; // добавляем то с какой попытки угадает пользователь
             }
-            else if ( random1 < num_people)
+            else if ( random1 < num_people) // если меньше
             {
                 Console.WriteLine("Загаданное число меньше");
                 attempt--;
@@ -773,42 +773,42 @@ while(attempt != 0)
         }
         else
         {
-            Console.WriteLine($"Ты выиграл с {remaining_attempt} попытки ,загаданное число было {random1}!");
-            win++;
-            if (win == 1)
+            Console.WriteLine($"Ты выиграл с {remaining_attempt} попытки ,загаданное число было {random1}!"); // если выиграл в первой игре
+            win++; // считываем это
+            if (win == 1) // проверяем
             {  
                 Console.WriteLine();
                 Console.WriteLine("РАЗ УЖ ТЫ ВЫИГРАЛ,ПОПРОБУЙ ЭТО!!!");
-                while ( attempt1 != 0)
+                while ( attempt1 != 0) // запускаем цикл второй игры,пока попытки не закончатся
                 { 
-                    if (attempt1 > 4)
+                    if (attempt1 > 4) // если больше 4
                     {
                         Console.Write($"У тебя осталось {attempt1} попыток, ");
                         Console.Write("Введи загаданное число от 1 до 1000: ");
                     }
-                    else if (attempt1 <= 4)
+                    else if (attempt1 <= 4) // если меньше 4
                     {
                         Console.Write($"У тебя осталось { attempt1} попытки, ");
                         Console.Write("Введи загаданное число от 1 до 1000: ");
                     }
-                    int num_people2 = int.Parse(Console.ReadLine()!);
-                    if (num_people2 <= 1000)
+                    int num_people2 = int.Parse(Console.ReadLine()!); // пользователь вводит число снова,конвертируем его в int
+                    if (num_people2 <= 1000) // если пользователь ввел число больше диапазона угадывания
                     {
                     
                               
-                        if (random3 != num_people2)
+                        if (random3 != num_people2) // проверяем равно ли число,что ввел пользователь,тому,что загадано
                         {
-                            if ( random3 > num_people2)
+                            if ( random3 > num_people2) // если загаданое больше
                             {
                                 Console.WriteLine("Загаданное число больше");
-                                attempt1--;
-                                remaining_attempt1++;
+                                attempt1--; // попытка -1
+                                remaining_attempt1++; // добавляем то с какой попытки угадал пользователь
                             }
-                            else if ( random3 < num_people2)
+                            else if ( random3 < num_people2) // если загаданое меньше
                             {
                                 Console.WriteLine("Загаданное число меньше");
-                                attempt1--;
-                                remaining_attempt1++;
+                                attempt1--; // попытка -1
+                                remaining_attempt1++; // добавляем то с какой попытки угадал пользователь
                             }
                         }
                     else
@@ -819,7 +819,7 @@ while(attempt != 0)
                     }      
                 else
                 {
-                    Console.WriteLine("Ты ввел число больше чем диапазон угадывания ");
+                    Console.WriteLine("Ты ввел число больше чем диапазон угадывания "); // если пользователь ввел число больше диапазона угадывания во второй игре
                 }
                 
                     
@@ -827,16 +827,17 @@ while(attempt != 0)
                 
 
                 }
-                Console.WriteLine($"Ты не смог угадать число от 1 до 1000, загаданное число было {random3}");
-                break;         
+                Console.WriteLine($"Ты не смог угадать число от 1 до 1000, загаданное число было {random3}"); // если не смог угадать во второй игре
+                break; // остановка консоли        
 
             }
         }
     }
     else
     {
-        Console.WriteLine("Ты ввел число больше диапазона угадывания ");
+        Console.WriteLine("Ты ввел число больше диапазона угадывания "); // если пользователь ввел число больше диапазона угадывания
     }
+    Console.WriteLine($"Ты не смог угадать число от 1 до 1000, загаданное число было {random1}"); // если не смог угадать в первой игре
 }
 
 
