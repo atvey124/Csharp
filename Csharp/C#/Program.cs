@@ -676,6 +676,130 @@ task3(new_massive1); // функция возведения в квадрат в
 PrintVoid(new_massive1); // вывод возведенных элементов массива
 
 
+// еще одна задача с использованием функции (void),где пользователь вводит с терминала длину и значения массива,далее они возводятся в квадрат и выводятся
+void ez_massive(int[] arr)
+{
+    if (arr.Length != 0) // проверка не пустой ли массив
+    {
+        for(int i = 0;i < arr.Length;i++)
+        {
+            arr[i] = arr[i] * arr[i]; // возведение в квадрат элементов,что ввел пользователь
+        }
+    }
+    else
+    {
+        Console.WriteLine("Массив пустой"); // если массив пустой
+    }
+}
+
+
+void input_massive(int[] arr) // функция вывода на экран
+{
+    {
+        foreach (int e in arr)
+        {
+            Console.Write(e + " "); // цикл который выведет результат
+        }
+    }
+
+}
+
+
+Console.WriteLine("Данная программа будет возводить в квадрат все,что вы введете в массив");
+Console.Write("Введите длину массива:");
+int lenght = int.Parse(Console.ReadLine()!); // пользователь вводит длину массива
+int[] new_massive_acd = new int[lenght]; // после чего она передается в длину массива
+Console.WriteLine($"Отлично,цикл закончится,когда пользователь заполнит все ячейки в массиве({lenght})");
+
+
+for(int ii = 0;ii < new_massive_acd.Length;ii++) // цикл ввода значений в массив
+{
+    Console.Write("Введите элементы массива(целое число!): ");
+    new_massive_acd[ii] = int.Parse(Console.ReadLine()!); // на место счетчка вводится значение с терминала и конвертируется в тип данных массива 'int'
+}
+
+
+
+ez_massive(new_massive_acd); // вызов функции возведения в квадрат
+Console.Write("Ответ: ");
+input_massive(new_massive_acd); // вызов функции вывода
+
+
+
+// простая игра на угадывание чисел
+Random random = new();
+Random random2 = new();
+int random1 = random.Next(1,101);
+int random3 = random2.Next(1,1001);
+int attempt = 10;
+int attempt1 = 10;
+int win = 0;
+int remaining_attempt = 0;
+int remaining_attempt1 = 0;
+while(attempt != 0)
+{   
+    Console.Write($"У тебя осталось {attempt} попыток, ");
+    Console.Write("Введите загаданное число: ");
+    
+    int num_people = int.Parse(Console.ReadLine()!);
+    if (random1 != num_people)
+    {
+        if ( random1 > num_people)
+        {
+            Console.WriteLine("Загаданое число больше");
+            attempt--;
+            remaining_attempt++;
+        }
+        else if ( random1 < num_people)
+        {
+            Console.WriteLine("Загаданное число меньше");
+            attempt--;
+            remaining_attempt++;
+        }
+
+    }
+    else
+    {
+        Console.WriteLine($"Ты выиграл с {remaining_attempt} попытки ,загаданное число было {random1}!");
+        win++;
+        if (win == 1)
+        {   
+            Console.WriteLine();
+            Console.WriteLine("РАЗ УЖ ТЫ ВЫИГРАЛ,ПОПРОБУЙ ЭТО!!!");
+            while ( attempt1 != 0)
+            { 
+                Console.Write($"У тебя осталось {attempt1} попыток, ");
+                Console.Write("Введите загаданное число от 1 до 1000: ");
+                int num_people2 = int.Parse(Console.ReadLine()!);
+                if (random3 != num_people2)
+                {
+                    if ( random3 > num_people2)
+                    {
+                        Console.WriteLine("Загаданное число больше");
+                        attempt1--;
+                        remaining_attempt1++;
+                    }
+                    else if ( random3 < num_people2)
+                    {
+                        Console.WriteLine("Загаданное число меньше");
+                        attempt1--;
+                        remaining_attempt1++;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Ты выиграл с {remaining_attempt1} попытки,загаданное число было {random3}! ");
+                    break;
+                }
+
+                
+
+            }
+            
+
+        }
+    }
+}
 
 
 

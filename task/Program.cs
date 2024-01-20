@@ -1,46 +1,73 @@
-﻿// еще одна задача с использованием функции(void),где пользователь вводит длину массива и он заполнятся случайными числами типа 'int' 
-void task1(int[] arr) // создание массива и передача в параметр массива
+﻿Random random = new();
+Random random2 = new();
+int random1 = random.Next(1,101);
+int random3 = random2.Next(1,1001);
+int attempt = 10;
+int attempt1 = 10;
+int win = 0;
+int remaining_attempt = 0;
+int remaining_attempt1 = 0;
+while(attempt != 0)
 {   
-    if (arr.Length > 0) // проверка не пустой ли массив
+    Console.Write($"У тебя осталось {attempt} попыток, ");
+    Console.Write("Введите загаданное число: ");
+    
+    int num_people = int.Parse(Console.ReadLine()!);
+    if (random1 != num_people)
     {
-        for(int i = 0;i < arr.Length;i++) // создание цикла,в таких случаях 'for'
+        if ( random1 > num_people)
         {
-            arr[i] = arr[i] * arr[i]; // возведение в квадрат всех элементов массива
+            Console.WriteLine("Загаданое число больше");
+            attempt--;
+            remaining_attempt++;
         }
+        else if ( random1 < num_people)
+        {
+            Console.WriteLine("Загаданное число меньше");
+            attempt--;
+            remaining_attempt++;
+        }
+
     }
     else
     {
-        Console.WriteLine("Массив пустой"); // если массив пустой
-    }
-}
+        Console.WriteLine($"Ты выиграл с {remaining_attempt} попытки ,загаданное число было {random1}!");
+        win++;
+        if (win == 1)
+        {   
+            Console.WriteLine();
+            Console.WriteLine("РАЗ УЖ ТЫ ВЫИГРАЛ,ПОПРОБУЙ ЭТО!!!");
+            while ( attempt1 != 0)
+            { 
+                Console.Write($"У тебя осталось {attempt1} попыток, ");
+                Console.Write("Введите загаданное число от 1 до 1000: ");
+                int num_people2 = int.Parse(Console.ReadLine()!);
+                if (random3 != num_people2)
+                {
+                    if ( random3 > num_people2)
+                    {
+                        Console.WriteLine("Загаданное число больше");
+                        attempt1--;
+                        remaining_attempt1++;
+                    }
+                    else if ( random3 < num_people2)
+                    {
+                        Console.WriteLine("Загаданное число меньше");
+                        attempt1--;
+                        remaining_attempt1++;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Ты выиграл с {remaining_attempt1} попытки,загаданное число было {random3}! ");
+                    break;
+                }
 
-void PrintVoid(int[] arr) // создание функции,которая выведет массив на экран
-{
+                
 
-    {
-        foreach(int e in arr)
-        {
-            Console.Write(e + " "); // цикл который выведет каждый элемент в массиве
+            }
+            
+
         }
     }
-
 }
-Console.Write("Введите сколько чисел будет в массива и они заполнятся рандомными: ");
-int count = int.Parse(Console.ReadLine()); // задание длины массива
-Random rnd = new(); // создание переменной которая будет генерировать случайные числа
-int[] new_massive = new int[count]; // создание массива и передача туда длины которую введете пользователь
-int i = 0; // счетчик
-Console.Write("Ваш массив:" + "[ ");
-while ( i < count) // пока счетчик не станет равным длине которую ввел пользователь
-{
-    new_massive[i] = rnd.Next(1,15); // каждый круг будем вносить случайное число в массив,в индекс 'i'
-    Console.Write(new_massive[i] + " "); // вывод случайных чисел которые сгенерировались
-    i++; // увеличение счетчика на 1
-}
-Console.WriteLine("]");
-Console.Write("Ответ: ");
-    
-task1(new_massive); // функция возведения в квадрат всех случайных чисел в массиве
-PrintVoid(new_massive); // вывод возведенных элементов массива
-
-
