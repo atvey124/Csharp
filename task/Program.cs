@@ -1,4 +1,39 @@
-﻿Random random = new();
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// простая задача на угадывание случайного числа
+Random random = new();
 Random random2 = new();
 int random1 = random.Next(1,101);
 int random3 = random2.Next(1,1001);
@@ -109,3 +144,4 @@ while(attempt != 0)
         Console.WriteLine("Ты ввел число больше диапазона угадывания ");
     }
 }
+
