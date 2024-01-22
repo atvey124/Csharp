@@ -1,4 +1,26 @@
-﻿
+﻿void void_func()
+{
+    while(true)
+    {
+        Console.Write("Введите число: ");
+        string n = Console.ReadLine();
+        if (n == "q")
+        {
+            return;
+        }
+        else
+        {
+            int.Parse(n);
+            if (n % 2 == 0)
+            {
+                return;
+            }
+            
+        }
+    
+    }  
+    
+}
 
 
 
@@ -9,6 +31,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 
 

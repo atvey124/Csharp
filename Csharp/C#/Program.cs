@@ -6,6 +6,7 @@ bool boolian = false; // логические значения true false
 char character = '!'; // знаки,пишутся внутри ''
 double double1 = 5.55; // дробные 
 string string1 = "Hi"; // строки
+//null - тип данных null это посути пустая ячейка в базе данных или же отсутствие значения
 Random rnd = new(); // генератор случайного числа,где rnd - имя переменной,данный тип данных является ссылочным,new() - выделение памяти под этот объект,таким образом используя переменную rnd можно обратиться к генератору случайных чисел
 int value = rnd.Next(1,100); // далее создаем новую переменную или используем уже существующую и передаем туда,нашу переменную типа Random,далее идет метод .Next(1,100) - в скобочках указываем диапазон случайных чисел,от какого до какого,верхняя граница не включительно
 Console.WriteLine(integer);
@@ -748,230 +749,107 @@ PrintArray(size);
 arr(PrintArray(size),size,range,range2);
 
 
+// еще одна задача с использованием функции,где дается случайное число и нужно занести все цифры этого числа в массив,первый индекс должен быть последней цифрой числа
+Console.Write("Введите начальную цифру диапазона(целое число): ");
+int input = int.Parse(Console.ReadLine()!);
+Console.Write("Введите конечную цифру диапазона(целое число): ");
+int input2 = int.Parse(Console.ReadLine()!);
 
 
+int rnum = new Random().Next(input,input2);
+Console.WriteLine(rnum);
+int count11 = 0;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// простая игра на угадывание случайного числа
-Console.WriteLine("Данная программа будет возводить в квадрат все,что вы введете в массив");
-Console.Write("Введите длину массива:");
-int lenght = int.Parse(Console.ReadLine()!); // пользователь вводит длину массива
-int[] new_massive_acd = new int[lenght]; // после чего она передается в длину массива
-Console.WriteLine($"Отлично,цикл закончится,когда пользователь заполнит все ячейки в массиве({lenght})");
-
-
-for(int ii = 0;ii < new_massive_acd.Length;ii++) // цикл ввода значений в массив
+int[] int_arr(int rnum,int len)
 {
-    Console.Write("Введите элементы массива(целое число!): ");
-    new_massive_acd[ii] = int.Parse(Console.ReadLine()!); // на место счетчка вводится значение с терминала и конвертируется в тип данных массива 'int'
+    int[] arr = new int[len];
+    for(int i = 0;rnum > 0;i++)
+    {
+        arr[i] = rnum % 10;
+        Console.Write(arr[i] + " ");
+        rnum = rnum / 10;
+    }
+    return arr;
 }
 
-
-
-ez_massive(new_massive_acd); // вызов функции возведения в квадрат
-Console.Write("Ответ: ");
-input_massive(new_massive_acd); // вызов функции вывода
-
-
-
-// простая игра на угадывание чисел
-Random random = new(); // создание рандомного числа
-Random random2 = new(); // создание рандомного числа для второй игры
-int random1 = random.Next(1,101); // диапазон случайных чисел передается в переменную
-int random3 = random2.Next(1,1001); // диапазон случайных чисел передается в переменную для второй игры
-int attempt = 10; // попытки в первой игре
-int attempt1 = 10; // попытки во второй игре
-int win = 0; // счетчик победы в первой игре
-int remaining_attempt = 1; // показывает с какой попытки ты выиграл
-int remaining_attempt1 = 1; // показывает с какой попытки ты выиграл во второй игре
-while(attempt != 0) // цикл который выполняется пока попыток не 0
-{ 
-    if (attempt > 4) // если попыток больше четырых
+void num_len(int rnum)
+{
+    for ( ;rnum > 0;count11++)
     {
-        Console.Write($"У тебя осталось {attempt} попыток, ");
-        Console.Write("Введи загаданное число от 1 до 100: ");
-    } 
-    else if ( attempt <= 4) // если попыток меньше либо равно 4
-    {
-        Console.Write($"У тебя осталось {attempt} попытки, ");
-        Console.Write("Введи загаданное число от 1 до 100: ");
-
+        rnum = rnum / 10;
+        
     }
-    
-    int num_people = int.Parse(Console.ReadLine()!); // ввод пользователем числа и конвертация его в int
-    if (num_people <= 100) // если пользователь ввел число в диапазоне от 1 до 100
-    {
-
-    
-        if (random1 != num_people) // если число,что ввел пользователь не равно тому,что загадано
-        {
-            if ( random1 > num_people) // если число,что ввел пользователь больше,того,что загадано
-            {
-                Console.WriteLine("Загаданое число больше");
-                attempt--; // счетчик попыток убавляем на 1
-                remaining_attempt++; // добавляем то с какой попытки угадает пользователь
-            }
-            else if ( random1 < num_people) // если меньше
-            {
-                Console.WriteLine("Загаданное число меньше");
-                attempt--;
-                remaining_attempt++;
-            }
-
-        }
-        else
-        {
-            Console.WriteLine($"Ты выиграл с {remaining_attempt} попытки ,загаданное число было {random1}!"); // если выиграл в первой игре
-            win++; // считываем это
-            if (win == 1) // проверяем
-            {  
-                Console.WriteLine();
-                Console.WriteLine("РАЗ УЖ ТЫ ВЫИГРАЛ,ПОПРОБУЙ ЭТО!!!");
-                while ( attempt1 != 0) // запускаем цикл второй игры,пока попытки не закончатся
-                { 
-                    if (attempt1 > 4) // если больше 4
-                    {
-                        Console.Write($"У тебя осталось {attempt1} попыток, ");
-                        Console.Write("Введи загаданное число от 1 до 1000: ");
-                    }
-                    else if (attempt1 <= 4) // если меньше 4
-                    {
-                        Console.Write($"У тебя осталось { attempt1} попытки, ");
-                        Console.Write("Введи загаданное число от 1 до 1000: ");
-                    }
-                    int num_people2 = int.Parse(Console.ReadLine()!); // пользователь вводит число снова,конвертируем его в int
-                    if (num_people2 <= 1000) // если пользователь ввел число больше диапазона угадывания
-                    {
-                    
-                              
-                        if (random3 != num_people2) // проверяем равно ли число,что ввел пользователь,тому,что загадано
-                        {
-                            if ( random3 > num_people2) // если загаданое больше
-                            {
-                                Console.WriteLine("Загаданное число больше");
-                                attempt1--; // попытка -1
-                                remaining_attempt1++; // добавляем то с какой попытки угадал пользователь
-                            }
-                            else if ( random3 < num_people2) // если загаданое меньше
-                            {
-                                Console.WriteLine("Загаданное число меньше");
-                                attempt1--; // попытка -1
-                                remaining_attempt1++; // добавляем то с какой попытки угадал пользователь
-                            }
-                        }
-                    else
-                    {
-                        Console.WriteLine($"Ты выиграл с {remaining_attempt1} попытки,загаданное число было {random3}! ");
-                        break;
-                    }
-                    }      
-                else
-                {
-                    Console.WriteLine("Ты ввел число больше чем диапазон угадывания "); // если пользователь ввел число больше диапазона угадывания во второй игре
-                }
-                
-                    
-                
-                
-
-                }
-                Console.WriteLine($"Ты не смог угадать число от 1 до 1000, загаданное число было {random3}"); // если не смог угадать во второй игре
-                break; // остановка консоли        
-
-            }
-        }
-    }
-    else
-    {
-        Console.WriteLine("Ты ввел число больше диапазона угадывания "); // если пользователь ввел число больше диапазона угадывания
-    }
-    Console.WriteLine($"Ты не смог угадать число от 1 до 1000, загаданное число было {random1}"); // если не смог угадать в первой игре
 }
+num_len(rnum);
+int_arr(rnum,count11);
 
 
+// еще одна задача с использованием функций,где человек может ввести параметры для поиска числа в массиве(деление нацело и последняя цифра числа),и оно найдется в массиве
+Console.Write("Введите размер массива: ");
+int sizez = int.Parse(Console.ReadLine()!);
+Console.Write("Введите на какое число должно делится число в массиве нацело,чтобы найти его: ");
+int del = int.Parse(Console.ReadLine()!);
+Console.Write("Введите на какую цифру оно должно заканчиватся,чтобы найти его:");
+int end = int.Parse(Console.ReadLine()!);
+Random rnd4 = new();
+
+
+int[] random_function(int size,int del,int end)
+{
+    int[] array = new int[size];
+    for(int i = 0;i < size;i++)
+    {
+        array[i] = rnd4.Next(1,10000);
+        Console.Write(array[i] + " ");
+        
+        if (array[i] % del == 0 && array[i] % 10 == end)
+        {
+            Console.Write("Ответ: " + array[i] + " ");
+        }
+    }
+    return array;
+
+}
+random_function(sizez,del,end);
+
+
+// еще одна задача с использованием функции,где пользователь вводит длину массив,после чего все числа в этом массиве преобразуются в строку
+Console.Write("Введите размер массива(максимум 8): ");
+int sizee = int.Parse(Console.ReadLine()!);
+Random rnd11 = new();
+
+
+string random_functionn(int size)
+{
+    int[] array = new int[size];
+    for(int i = 0;i < size;i++)
+    {
+        array[i] = rnd11.Next(1,5);
+        Console.Write(array[i] + " ");
+    }
+    string a = "";
+    for(int i = 0;i < size;i++)
+    {
+        a += array[i];
+    }   
+    Console.WriteLine();
+    Console.WriteLine(a);
+    return a;
+
+}
+random_functionn(sizee);
+
+
+
+                                                                                        //АЛГОРИТМЫ
+/*
+1. Константные
+2. Логарефмические
+3. Линейные
+4. Линейно-логарефмические
+5. Квадратные
+6. Кубические
+*/
+                                                                                
