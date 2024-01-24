@@ -1,26 +1,23 @@
-﻿void void_func()
+﻿int numz = int.Parse(Console.ReadLine()!); 
+int[, ] matrix1 = new int[numz,numz]; // создание матрицы
+for(int e1 = 0;e1 < numz;e1++) //цикл который будет выводить в терминал числа по вертикале
 {
-    while(true)
+    for(int j = 0;j < numz;j++) // цикл который будет выводить числа по горизонтали
+    {  
+        matrix1[e1,j] = (e1 + 1) * (j + 1); // если нет,i = элементы матрицы по горизонтали и они просто перемнажаются,тоесть смежные элементы перемнажаются
+        matrix1[j,e1] = (e1 + 1) * (j + 1); // j = элементы матрицы по вертикале и они просто перемнажаются
+    }
+ 
+}   
+for(int iii = 0;iii < numz;iii++)
+{
+    for(int k = 0;k < numz;k++)
     {
-        Console.Write("Введите число: ");
-        string n = Console.ReadLine();
-        if (n == "q")
-        {
-            return;
-        }
-        else
-        {
-            int.Parse(n);
-            if (n % 2 == 0)
-            {
-                return;
-            }
-            
-        }
-    
-    }  
-    
-}
+        Console.Write(matrix1[iii,k]);  // цикл вывода в терминал значений матрицы 
+        Console.Write(" ");
+    }
+    Console.WriteLine();
+} // сложность данного алгоритма O((n ^ 2) / 2)
 
 
 
@@ -42,10 +39,6 @@
 
 
 
-
-
-
-}
 
 
 
