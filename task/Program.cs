@@ -2,37 +2,34 @@
 int size = int.Parse(Console.ReadLine()!);
 Random rnd_num = new();
 int[] arrr = new int[size];
-for(int i = 0;i < size;i++)
+for (int i = 0;i < size;i++)
 {
-    arrr[i] = rnd_num.Next(-30,1000);
-} 
-int[] arr_function(int[] arrr) // функция будет принимать массив,который нужно отсортировать и возвращать уже отсортированный
+    arrr[i] = rnd_num.Next(-30,100);
+}
+int[] new_arr( int[] arr)
 {
-    
-    for ( int i = 0;i < arrr.Length;i++) // цикл внутри которого будет цикл,который исчет минимальный элемент в текущем диапазоне
+    for ( int i = 0;i < arr.Length;i++)
     {
-        int index_min = i; // индекс минимального элемента в текущем диапазоне (j)
-        for ( int j = i;j < arrr.Length;j++) // j - индекс минимального элемента
+        int index_min = i;
+        for ( int j = i;j < arr.Length;j++)
         {
-            if ( arrr[j] < arrr[index_min]) // если текущий элемент,меньше минимального,то он становится минимальным
+            if (arr[j] < arr[index_min])
             {
                 index_min = j;
             }
         }
-        if (arrr[i] == arrr[index_min]) // если произошло так,что минимальным в текущем диапазоне элементом является такое же число,как и index_min
+        if (arr[i] == arr[index_min])
         {
-            continue; //тогда мы просто переходим к другой строке кода,continue - оператор который просто ничего не делает,который указывает на то,что нужно просто перейти к другой строке кода(дальше)
+            continue;
         }
-        int temp = arrr[i]; // переменная которая будет заменять текущий элемент,на минимальный из диапазона(j)
-        arrr[i] = arrr[index_min]; // замена текущего индекса,на минимальный элемент
-        arrr[index_min] = temp;
-
+        int temp = arr[i];
+        arr[i] = arr[index_min];
+        arr[index_min] = temp;
     }
-    return arrr;
+    return arr;
 }
-Console.WriteLine($"Начальный массив:  {string.Join(", ", arrr)}"); // метод string.Join(", ",arrr) - объединяет все элементы массива в одну строку, так же он принимает два параметра,первый это разделитель(с помощью чего мы хотим разделять строку,указывается он в ""),второй это сам массив. Первый элемент от второго отделяется запятой(,)
-Console.WriteLine($"Ответ: {string.Join(", ", arr_function(arrr))}");
-
+Console.WriteLine($" начальный массив: {string.Join(", ", arrr)}");
+Console.Write($" ответ: {string.Join(", ", new_arr(arrr))}");
 
 
 
