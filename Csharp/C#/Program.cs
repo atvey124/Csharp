@@ -1036,6 +1036,59 @@ for(int ii1 = 1;ii1 <= num;ii1++) // цикл который будет пере
 // сложность O(n - 1)^2 = O(n^2 - 2n + 1)
 
 
+Console.Write("Введите длину массива: ");
+try
+{
+    int size12 = int.Parse(Console.ReadLine()!);
+    Random rnd_num12 = new();
+    int[] arrr12 = new int[size12];
+    for (int i1000 = 0;i1 < size12;i1000++)
+    {
+        arrr[i1000] = rnd_num12.Next(-30,100);
+    }
+
+
+
+    bool test12 (int[] arrr) // базовый тест,который будет выводить true - если массив отсортирован и false если нет
+    {
+        for(int i = 0;i < arrr.Length - 1;i++)
+        {
+            if ( arrr[i] > arrr[i + 1]) // чтобы понять отсортирован ли массив,достаточно сравнить первый элемент со вторым,если первый больше массив не отсортирован,далее сравниваем все элементы
+                return false;
+        }
+        return true;
+    }
+
+
+    int[] bubble_function(int[] arrr)
+    {
+        for (int i = 0;i < arrr.Length - 1;i++) // arrr.Length - 1,поскольку для перестановки первых двух элементов требуется одно действие,а не два,для перестановки трех элементов требуется два действия,для перестановки четырех - 4,тоесть один элемент двигать не приходится
+        {
+            for ( int j = 0;j < arrr.Length - 1 - i;j++) // -i сделано потому что когда мы переместили элемент на свою позицию,нам больше не обязательно смотреть на него(он уже стоит на своем месте)
+            {
+                int temp1 = arrr[j];
+                if (arrr[j] > arrr[j + 1])
+                {
+                    arrr[j] = arrr[j + 1];
+                    arrr[j + 1] = temp1;
+
+                }
+            }
+
+        }
+        return arrr;
+    }
+    Console.WriteLine($"начальный массив: {string.Join(",", arrr12)}");
+    Console.WriteLine(test12(arrr12));
+    Console.WriteLine($"готовый массив: {string.Join(",", bubble_function(arrr12))}");
+    Console.WriteLine(test12(arrr12));
+    
+}
+catch
+{
+    Console.WriteLine("Вы ввели не тот тип данных,требуется 'int' ");
+}
+
                                                                                     //матрицы
 
 int[, ] matrix = new int[num,num]; // создание матрицы происходит так,где int - тип данных,[num,num] - диапазон матрицы,откуда до куда
