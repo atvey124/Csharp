@@ -6,37 +6,40 @@ for (int i = 0;i < size;i++)
 {
     arrr[i] = rnd_num.Next(-30,100);
 }
-int[] new_arr( int[] arr)
+
+
+bool test (int[] arrr) // базовый тест,который будет выводить true - если массив отсортирован и false если нет
 {
-    for ( int i = 0;i < arr.Length;i++)
+    for(int i = 0;i < arrr.Length;i++)
     {
-        int index_min = i;
-        for ( int j = i;j < arr.Length;j++)
+        if ( arrr[i] > arrr[i + 1]) // чтобы понять отсортирован ли массив,достаточно сравнить первый элемент со вторым,если первый больше массив не отсортирован,далее сравниваем все элементы
+            return false;
+    }
+    return true;
+}
+
+
+int[] bubble_function(int[] arrr)
+{
+    for (int i = 0;i < arrr.Length - 1;i++) // arrr.Length - 1,поскольку для перестановки первых двух элементов требуется одно действие,а не два,для перестановки трех элементов требуется два действия,для перестановки четырех - 4,тоесть один элемент двигать не приходится
+    {
+        for ( int j = 0;j < arrr.Length - 1 - i;j++) // -i сделано потому что когда мы переместили элемент на свою позицию,нам больше не обязательно смотреть на него(он уже стоит на своем месте)
         {
-            if (arr[j] < arr[index_min])
+            int temp1 = arrr[j];
+            if (arrr[j] > arrr[j + 1])
             {
-                index_min = j;
+                arrr[j] = arrr[j + 1];
+                arrr[j + 1] = temp1;
+
             }
         }
-        if (arr[i] == arr[index_min])
-        {
-            continue;
-        }
-        int temp = arr[i];
-        arr[i] = arr[index_min];
-        arr[index_min] = temp;
+
     }
-    return arr;
+    return arrr;
 }
-Console.WriteLine($" начальный массив: {string.Join(", ", arrr)}");
-Console.Write($" ответ: {string.Join(", ", new_arr(arrr))}");
-
-
-
-
-
-
-
+Console.WriteLine($"начальный массив: {string.Join(",", arrr)}");
+Console.WriteLine($"готовый массив: {string.Join(",", bubble_function(arrr))}");
+Console.WriteLine(test(arrr));
 
 
 
