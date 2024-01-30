@@ -1067,9 +1067,9 @@ try
             for ( int j = 0;j < arrr.Length - 1 - i;j++) // -i сделано потому что когда мы переместили элемент на свою позицию,нам больше не обязательно смотреть на него(он уже стоит на своем месте)
             {
                 int temp1 = arrr[j];
-                if (arrr[j] > arrr[j + 1])
+                if (arrr[j] > arrr[j + 1]) // если текещее число меньше следующего
                 {
-                    arrr[j] = arrr[j + 1];
+                    arrr[j] = arrr[j + 1]; // меняем их местами
                     arrr[j + 1] = temp1;
 
                 }
@@ -1088,6 +1088,123 @@ catch
 {
     Console.WriteLine("Вы ввели не тот тип данных,требуется 'int' ");
 }
+
+
+
+
+                                                                                    //линейно-логарефмические алгоритмы
+//БЫСТРАЯ СОРТИРОВКА
+Console.Write("Введите длину массива: ");
+try // то что в блоке try - выполняется пока не вылезет ошибка
+{
+    T[] Concat<T>(params T[][] arrays) // объединение всех массивов в один
+    {
+        var result = new T[arrays.Sum(a => a.Length)]; // готовый массив
+        int offset = 0;
+        foreach(T[] arrr in arrays)
+        {
+            arrr.CopyTo(result,offset); // массив будет соединен с другим начиная с offset,соединенный массив - result
+            offset += arrr.Length; // добавление количество элементов которые мы внесли в готовый массив в переменную offset,изначально готовый массив пустой
+        }
+        return result;
+    }
+
+    int size12 = int.Parse(Console.ReadLine()!); // создание рандомного массива на количество элементов которое ввел пользователь
+    Random rnd_num12 = new();
+    int[] arrr = new int[size12];
+    for (int i1000 = 0;i1000 < size12;i1000++)
+    {
+        arrr[i1000] = rnd_num12.Next(-30,100);
+    }
+
+
+
+    bool test12 (int[] arrr) // базовый тест
+    {
+        for(int i = 0;i < arrr.Length;i++)
+        {
+            if ( arrr[i] > arrr[i + 1]) 
+                return false;
+        }
+        return true;
+    }
+
+
+    int[] quick_sort(int[] arrr)
+    {
+        if (arrr.Length < 2)
+        {
+            return arrr; // это базовый случай,тоесть массив отсортирован
+        }
+        else
+        {
+            int reference = arrr[0]; // опорный элемент(всегда первый элемент массива)
+            int coun = 0; // счетчик сколько элементов  в массиве меньше либо больше либо равны опорному(универсальный счетчик)
+            foreach (int e in arrr) // подсчет сколько элементов в массиве меньше опорного
+            {   
+                if (e < reference)
+                {
+                    coun++;
+                }
+            }
+            int[] less = new int[coun]; // создание массива для чисел которые меньше опорного,передача туда значения 'coun' - количество элементов меньше опорного
+            int j = 0; // индекс который будет заносить элементы из основного массива в массив содержащий элементы(большие,равные,меньшие) опорному
+            for (int i = 0;i < arrr.Length;i++)
+            {
+                if (arrr[i] < reference)
+                {
+                    less[j] = arrr[i];
+                    j++;
+                }
+            }
+            coun = 0;
+            foreach(int el in arrr) // проверка сколько чисел в основном массиве больше опорного
+            {
+                if (el > reference)
+                {
+                    coun++;
+                }
+            }
+            int[] greater = new int[coun];
+            j = 0;
+            for (int i = 0;i < arrr.Length;i++) // занесение элементов из основного массива в массив содержащий элементы больше опорного
+            {
+                if (arrr[i] > reference)
+                {
+                    greater[j] = arrr[i];
+                    j++;
+                }
+            }
+            coun = 0;
+            foreach (int e in arrr) // проверка сколько элементов в массиве равны опорному
+            {
+                if (e == reference)
+                {
+                    coun++;
+                }
+            }
+            int[] reference_arr = new int[coun]; // занесение элементов из основного массива в массив содержащий элементы равные массиву
+            for (int i = 0;i < coun;i++)
+            {
+                reference_arr[i] = reference;
+            }
+            int[] result = Concat(quick_sort(less), reference_arr, quick_sort(greater)); // объединение всех массивов в один,надо почитать!
+            return result;
+        }
+    }
+    Console.WriteLine($"начальный массив: {string.Join(",", arrr)}");
+    Console.WriteLine(test12(arrr));
+    Console.WriteLine($"готовый массив: {string.Join(",", quick_sort(arrr))}");
+    Console.WriteLine(test12(arrr));
+    
+}
+catch // то что в блоке catch - выполняется после того как в 'try' вылезла ошибка
+{
+    Console.WriteLine("Вы ввели не тот тип данных,требуется 'int' ");
+}
+//сложность - O(log2(size))
+
+
 
                                                                                     //матрицы
 
