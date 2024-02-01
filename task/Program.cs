@@ -1,7 +1,27 @@
-﻿
+﻿int n_fact(int fact)
+{
+    
+    if (fact <= 1)
+    {
+        return 1;
+    }
+    int size = n_fact(fact - 1);
+    size = fact * size;
+    int i = fact;
+    Console.Write($"fact: {size} ");
+    Console.Write($"Раскручивание рекурсии: {i}");
+    Console.WriteLine();
+    return size;
+    
 
-
-
+}
+Console.Write("Введи факториал: ");
+int fact = int.Parse(Console.ReadLine()!);
+Console.WriteLine(n_fact(fact));
+// отладчик - это программа которая позволяет запустить код в особом режиме(так и называется 'режим отладки')
+// отладчик можно вызвать нажав кнопку 'run and debug'
+//f11 - шаг с заходом,тоесть если на пути отладчика встретится функция он зайдет в нее
+//f10 - шаг с обходом,если функция встретится он не зайдет в нее
 
 
 
