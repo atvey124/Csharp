@@ -1,4 +1,6 @@
 ﻿// типы данных в c#
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Transactions;
 
@@ -467,6 +469,451 @@ else
     
 
 
+
+                                                                                        // двумерные массивы
+
+
+// базовая задача на заполнение двумерного массива рандомными числами
+
+// двумерный массив хранится в памяти в виде одномерного массива,элементы идут последовательно друг за другом,не пропуская ячеек памяти,тоесть строка 2 пойдет сразу за строкой 1
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+int[,] table = new int[3,5]; // объявление двухмерного массива выглядит следующим образом,где int[,] - указывает что массив двумерный, table - имя, new int[3,5] - означает,что в этом массиве будет использовано три столбца(три одномерных массива), и в этих одномерных массивах будет по 5 элементов
+Random rndd = new(); 
+for (int ii  = 0;ii < table.GetLength(0);ii++) //создаем цикл который будет обращаться,к строкам внутри двумерного массива(строки - это количество одномерных массивов внутри двумерного,столбцы - это элементы внутри одномерного массива) table.GetLength(0) - позволяет узнать количество строк в двумерном массиве,туда передается имя массива(table),затем вызывается метод .GetLength(0), параметр 0,означает,что мы как раз таки хотим запросить количество строк 
+{
+    
+    for( int j = 0;j < table.GetLength(1);j++) // создаем цикл,который будет обращаться конкретно к элементам внутри первого столбца(тоесть внутри первого одномерного массива)
+    {
+        
+        table[ii,j] = rndd.Next(1,100); // в параметрах вызова двумерного массива указывается строка и столбец(в нашем случае строка - ii,столбец - j),далее мы передаем в столбец рандомные числа(увеличивая j на 1(счетчик)),пока не достигнем конца столбца,далее переходим на следующий столбец(увеличивая ii на 1)
+        Console.Write($" {table[ii,j]} ");
+
+    }
+    Console.WriteLine($"Строка {ii}"); // номер строки,так же как и индекс,начинается с 0
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+// заполнение двумерного массива рандомными числами,а после вывод на экран этого двумерного массива(напоминаю,что функция которая возвращает что-либо,не должна содержать вывод на экран,для этого используется другая функция)
+int[,] random_matrix(int table,int table1)
+{
+    Random rnd = new();
+    int[,] matrix = new int[table,table1]; // создание двумерного массива и передача туда параметров,что введет пользователь(количество строк и столбцов)
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл который отвечает за строки
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++) // цикл который отвечает за столбцы
+        {
+            matrix[i,j] = rnd.Next(1,101);
+        }
+        
+    }
+    return matrix;
+}
+void print_matrix(int[,] matrix)
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            Console.Write(matrix[i,j] + " ");
+        }
+        Console.WriteLine($"Столбец № {i}");
+    }
+}
+Console.Write("Введите сколько строк будет в двумерном массиве: ");
+int table_one = int.Parse(Console.ReadLine()!);
+Console.Write("Введите сколько столбцов будет в двумерном массиве: ");
+int table1 = int.Parse(Console.ReadLine()!);
+
+
+
+// еще одна задача,где нужно обозначить числа в двумерном массиве,сумма цифр которых четна,ключевым словом - intresting.ПОЗЖЕ НУЖНО ОПТИМИЗИРОВАТЬ АЛГОРИТМ
+int[,] random1_matrix(int table,int table1)
+{
+    Random rnd = new();
+    int[,] matrix = new int[table,table1]; // создание двумерного массива и передача туда параметров,что введет пользователь(количество строк и столбцов)
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл который отвечает за строки
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++) // цикл который отвечает за столбцы
+        {
+            matrix[i,j] = rnd.Next(1,100);
+        }
+        
+    }
+    
+    return matrix;
+}
+
+int[,] if_matrix(int[,] matrix)
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            int sum = 0; // переменная которая будет считать сумму цифр в числе
+            int current_index = matrix[i,j]; // текущее расматриваемое число,в строке [i]
+            for (int k = 0;current_index != 0;k++) // цикл который будет считать сумму всех цифр числа
+            {
+                sum = sum + current_index % 10;
+                current_index = current_index / 10;
+
+            }
+            Console.Write(sum + ", ");
+            if (sum % 2 == 0) // если сумма цифр четная
+            {
+                Console.Write("- Intresting," + " ");
+            }
+            sum = 0; // обнуление счетчика и повторный круг         
+            
+        }
+    }
+    return matrix;
+}
+
+void print_matrix1(int[,] matrix) // функция вывода
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            Console.Write(matrix[i,j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+Console.Write("Введите сколько строк будет в двумерном массиве: ");
+int table_one1 = int.Parse(Console.ReadLine()!);
+Console.Write("Введите сколько столбцов будет в двумерном массиве: ");
+int table11 = int.Parse(Console.ReadLine()!);
+
+
+
+int[,] matrix1 = random1_matrix(table_one1,table11);
+
+print_matrix1(matrix1);
+
+Console.WriteLine();
+
+if_matrix(matrix1);
+
+
+int[,] matrix = random_matrix(table_one,table1); // создание переменной и передача туда результат функции random_matrix
+print_matrix(matrix); // вызов функции печати и передача туда в параметр переменную,содержащую результат функции random_matrix
+
+
+// еще одна задача,где нужно возвести в квадрат элементы двумерного массива,чей индекс четный
+
+int[,] random11_matrix(int table,int table1)
+{
+    Random rnd = new();
+    int[,] matrix = new int[table,table1]; // создание двумерного массива и передача туда параметров,что введет пользователь(количество строк и столбцов)
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл который отвечает за строки
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++) // цикл который отвечает за столбцы
+        {
+            matrix[i,j] = rnd.Next(1,100);
+        }
+        
+    }
+    
+    return matrix;
+}
+
+void iseven(int[,] matrix)
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            if(i % 2 == 0) // проверка на четность первого индекса(индекса строки)
+            {
+                if (j % 2 == 0) // проверка на четность второго индекса(индекса столбца)
+                    Console.Write($"Элемент {matrix[i,j]}, имеет четный индекс ");
+                    Console.WriteLine($"Его квадрат {Math.Pow(matrix[i,j],2)}"); // если оба индекса четны,возводим в квадрат элемент под этими индексами
+            }
+
+        }
+    }
+}
+
+void print_matrix11(int[,] matrix) 
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            Console.Write(matrix[i,j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+
+
+
+
+Console.Write("Введите сколько строк будет в двумерном массиве: ");
+int table_one11 = int.Parse(Console.ReadLine()!);
+Console.Write("Введите сколько столбцов будет в двумерном массиве: ");
+int table111 = int.Parse(Console.ReadLine()!);
+
+
+
+
+int[,] matrix3 = random11_matrix(table_one11,table111);
+
+print_matrix11(matrix3);
+
+iseven(matrix3);
+
+
+// задача на нахождение суммы элементов на главной диагонали,главная диагональ это диагональ с начала двумерного массива,которая идет по диагонали до конца массива
+
+int[,] random1_matrix1(int table,int table1)
+{
+    Random rnd = new();
+    int[,] matrix = new int[table,table1]; // создание двумерного массива и передача туда параметров,что введет пользователь(количество строк и столбцов)
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл который отвечает за строки
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++) // цикл который отвечает за столбцы
+        {
+            matrix[i,j] = rnd.Next(1,100);
+        }
+        
+    }
+    
+    return matrix;
+}
+
+void IsSum(int[,] matrix)
+{
+    int sum = 0;
+    
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл отвечающий за строку
+    {
+        int j = i; // счетчик который будет равен строке,тоесть если мы на нулевой строке,то и столбец будет нулевым,если на первой,то и столбец будет первым,таким образом проводим диагональ до конца массива
+        sum = sum + matrix[i,j];
+
+    }
+    Console.WriteLine(sum);
+}
+    
+
+
+void print_matrix12(int[,] matrix) 
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            Console.Write(matrix[i,j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+
+
+
+
+Console.Write("Введите сколько строк будет в двумерном массиве: ");
+int table_one111 = int.Parse(Console.ReadLine()!);
+Console.Write("Введите сколько столбцов будет в двумерном массиве: ");
+int table1111 = int.Parse(Console.ReadLine()!);
+
+
+
+
+int[,] matrix11 = random1_matrix1(table_one111,table1111);
+
+print_matrix12(matrix11);
+
+IsSum(matrix11);
+
+
+// задача где среднее арефметическое каждой строки двумерного массива записывается в одномерный,а после считается среднее арфеметическое всех записанных строк
+
+int[,] random1_matrix3(int table,int table1)
+{
+    Random rnd = new();
+    int[,] matrix = new int[table,table1]; // создание двумерного массива и передача туда параметров,что введет пользователь(количество строк и столбцов)
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл который отвечает за строки
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++) // цикл который отвечает за столбцы
+        {
+            matrix[i,j] = rnd.Next(1,100);
+        }
+        
+    }
+    
+    return matrix;
+}
+
+double[] average(int[,] matrix)
+{
+    int size = matrix.GetLength(0);
+    int size1 = matrix.GetLength(1);
+    double[] sum = new double[size];
+    for(int i = 0;i < size;i++) 
+    {
+        double arrefmetic_sum = 0;
+        for (int j = 0;j < size1;j++)
+        {
+            arrefmetic_sum = arrefmetic_sum + matrix[i,j];
+        }
+        sum[i] = arrefmetic_sum / size1;
+
+    }
+    return sum;
+}
+    
+void print_matrix13(int[,] matrix) 
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            Console.Write(matrix[i,j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+void print_matrix2(double[] sum)
+{
+    Console.Write("[");
+    for(int i = 0;i < sum.Length;i++)
+    {
+        Console.Write(sum[i] + " ");
+    }
+    Console.WriteLine("] - каждый элемент равен среднему арефметическому,каждого столбца двумерного массива");
+}
+
+void average1 (double[] arr_sum)
+{
+    double sum1 = 0;
+    for(int i = 0;i < arr_sum.Length;i++)
+    {
+        sum1 += arr_sum[i];
+    }
+    sum1 = sum1 / arr_sum.Length;
+    Console.WriteLine($"Среднее арфеметическое массива из средних арефметических строк двумерного массива равно: {sum1}");
+}
+
+
+Console.Write("Введите сколько строк будет в двумерном массиве: ");
+int table_one13 = int.Parse(Console.ReadLine()!);
+Console.Write("Введите сколько столбцов будет в двумерном массиве: ");
+int table13 = int.Parse(Console.ReadLine()!);
+
+
+
+
+int[,] matrix23 = random1_matrix3(table_one13,table13);
+
+print_matrix13(matrix23);
+
+double[] arr_sum = average(matrix23);
+
+print_matrix2(arr_sum);
+Console.WriteLine();
+average1(arr_sum);
+
+
+// функция которая найдет нужный элемент который попросил пользователь в двумерном массиве,так же можно указать сколько раз это нужно повторить,ответ занесется в одномерный массив
+
+Random str111 = new();
+Random str1111 = new();
+int str = str111.Next(1,11); // рандомное количество строк
+int str1 = str1111.Next(1,11); // рандомное количество столбцов
+
+
+int[,] random1_matrix11(int str,int str1)
+{
+    Random rnd = new();
+    int[,] matrix = new int[str,str1 + 1]; // создание двумерного массива и передача туда параметров,что введет пользователь(количество строк и столбцов)
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл который отвечает за строки
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++) // цикл который отвечает за столбцы
+        {
+            matrix[i,j] = rnd.Next(1,100);
+        }
+        
+    }
+    
+    return matrix;
+}
+
+int[] IsElement(int[,] matrix) // функция которая найдет нужный элемент который попросил пользователь в двумерном массиве,так же можно указать сколько раз это нужно повторить,ответ занесется в одномерный массив
+{
+    Console.Write("Введите сколько элементов нужно найти: ");
+    int repeat = int.Parse(Console.ReadLine()!);
+    int[] repeat_arr = new int[repeat]; // длина массив такая которую ввел пользователь
+    for(int i = 0;i < repeat_arr.Length;i++)
+    {
+
+    
+
+        Console.Write("Введите на какой строке вы хотите найти элемент: ");
+
+        int str_input = int.Parse(Console.ReadLine()!);
+
+        Console.Write("Введите индекс какого элемента вы хотите найти: ");
+
+        int column_input = int.Parse(Console.ReadLine()!);
+        try // если такой индекс есть то он заносится в массив
+        {
+            Console.WriteLine($"Элемент {matrix[str_input,column_input]}");
+            repeat_arr[i] = matrix[str_input,column_input];
+            
+        } 
+        catch // если нет
+        {
+            Console.WriteLine($"Индекс за пределом массива {str_input} {column_input}");
+            Console.WriteLine($"Количество строк: {str + 1}, количество столбцов: {str + 1}");
+            i--;
+        }
+        
+    }
+    return repeat_arr;
+
+}
+    
+
+    
+void print_matrix122(int[,] matrix) // функция вывода двумерного массива
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            Console.Write(matrix[i,j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+ 
+int[,] matrix12 = random1_matrix11(str,str1);
+
+print_matrix122(matrix12);
+
+int[] IsElement1 = IsElement(matrix12); // 
+Console.WriteLine($"Получившейся массив: [{string.Join(", ",IsElement1)}]");
+
+
+/////////////////////////////////////////////////////////////////////////////////
+int[,] table3 ={
+    {43 ,65 ,786 ,5454 ,564},
+    {54,675,76,53,65}
+}; // так же двумерный массив можно создавать таким образом
+
+// ВАЖНОЕ НАПОМИНАНИЕ
+
+// двумерный массив должен содержать во всех строках,одинаковое количество столбцов
+// тоесть во одномерных массивах,внутри двумерного,должно быть равное количество элементов
 
 
                                                                                         // функции(void)
@@ -1298,7 +1745,6 @@ for(int iii = 0;iii < numz;iii++)
 
 int n_fact(int fact)
 {
-    
     if (fact <= 1)
     {
         return 1;
@@ -1310,11 +1756,64 @@ int n_fact(int fact)
     Console.Write($"Раскручивание рекурсии: {i}");
     Console.WriteLine();
     return size;
-    
-
 }
 Console.Write("Введи факториал: ");
 int fact = int.Parse(Console.ReadLine()!);
 Console.WriteLine(n_fact(fact));                                                                               
+
+
+
+
+                                                                                    // СТРОКИ
+// строка является массивом,содержащим элементы типа 'char'
+// тоесть зная порядковый номер определенного элемента,мы можем к нему обратиться
+//РАССМОТРИМ ПРИМЕР
+
+string hello = "hello world";
+Console.WriteLine(hello[0]); // результатом будет (h)
+
+// элементы строки не могут быть изменены,а так же строка не может быть уменьшина либо увеличина,что не присуще массиву
+//РАССМОТРИМ ПРИМЕР
+
+hello[1] = "E"; // в таком случае вылезет ошибка,ведь мы попытались изменить строку
+
+//так же строку можно создавать как массив типа данных 'char'
+
+char[] ch_array = { 'h','e','l','l','o' };
+string str1 = new String(ch_array); // new String - является конструктором,который создает объект,в параметр этого конструктора кладется символьный массив
+
+//так же доступен еще и такой способ
+string s = new String('a',7); // результатом будет (aaaaaaa)
+
+
+//МЕТОДЫ СТРОК
+
+//Contains - метод позволяющий определить есть ли в строке подстрока
+//EndsWith - метод позволяющий определить,совпадает ли конец строки с подстрокой
+//index() - метод который находит индекс первого вхождения символа или подстроки в строке
+//insert - вставляет в строку подстроку
+//Replace - замещает в строке символ или подстроку другим символом или подстрокой
+
+// до этого было сказано,что строки не изменяемый тип данных,однако методы могут их менять
+// точнее они просто создают новую строку в памяти и туда помещают метод и саму строку
+
+
+//базовая задача на строки,где нужно отделить буквы от цифр
+string GetLetters(string let)
+{
+    string letter = "";
+    foreach(char e in let)
+    {
+        if (char.IsLetter(e) == true) // char.IsLetter - метод которому присущ тип данных 'char' - позволяет узнать является ли символ в строке буквой
+        {
+            letter = letter + e; // цикл который будет добавлять буквы в новую переменную
+        }
+    }
+    return letter;
+}
+
+string letter = "re43345fdgfg"; // переменная являющяяся параметром функции
+string str = GetLetters(letter); // создаем переменную и вызываем внутри функцию
+Console.WriteLine(str);
 
 

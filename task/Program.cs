@@ -1,27 +1,87 @@
-﻿int n_fact(int fact)
+﻿// // функция которая найдет нужный элемент который попросил пользователь в двумерном массиве,так же можно указать сколько раз это нужно повторить,ответ занесется в одномерный массив
+
+Random str111 = new();
+Random str1111 = new();
+int str = str111.Next(1,11); // рандомное количество строк
+int str1 = str1111.Next(1,11); // рандомное количество столбцов
+
+
+int[,] random1_matrix(int str,int str1)
 {
-    
-    if (fact <= 1)
+    Random rnd = new();
+    int[,] matrix = new int[str,str1 + 1]; // создание двумерного массива и передача туда параметров,что введет пользователь(количество строк и столбцов)
+    for(int i = 0;i < matrix.GetLength(0);i++) // цикл который отвечает за строки
     {
-        return 1;
+        for(int j = 0;j < matrix.GetLength(1);j++) // цикл который отвечает за столбцы
+        {
+            matrix[i,j] = rnd.Next(1,100);
+        }
+        
     }
-    int size = n_fact(fact - 1);
-    size = fact * size;
-    int i = fact;
-    Console.Write($"fact: {size} ");
-    Console.Write($"Раскручивание рекурсии: {i}");
-    Console.WriteLine();
-    return size;
+    
+    return matrix;
+}
+
+int[] IsElement(int[,] matrix) // функция которая найдет нужный элемент который попросил пользователь в двумерном массиве,так же можно указать сколько раз это нужно повторить,ответ занесется в одномерный массив
+{
+    Console.Write("Введите сколько элементов нужно найти: ");
+    int repeat = int.Parse(Console.ReadLine()!);
+    int[] repeat_arr = new int[repeat]; // длина массив такая которую ввел пользователь
+    for(int i = 0;i < repeat_arr.Length;i++)
+    {
+
     
 
+        Console.Write("Введите на какой строке вы хотите найти элемент: ");
+
+        int str_input = int.Parse(Console.ReadLine()!);
+
+        Console.Write("Введите индекс какого элемента вы хотите найти: ");
+
+        int column_input = int.Parse(Console.ReadLine()!);
+        try // если такой индекс есть то он заносится в массив
+        {
+            Console.WriteLine($"Элемент {matrix[str_input,column_input]}");
+            repeat_arr[i] = matrix[str_input,column_input];
+            
+        } 
+        catch // если нет
+        {
+            Console.WriteLine($"Индекс за пределом массива {str_input} {column_input}");
+            Console.WriteLine($"Количество строк: {str + 1}, количество столбцов: {str + 1}");
+            i--;
+        }
+        
+    }
+    return repeat_arr;
+
 }
-Console.Write("Введи факториал: ");
-int fact = int.Parse(Console.ReadLine()!);
-Console.WriteLine(n_fact(fact));
-// отладчик - это программа которая позволяет запустить код в особом режиме(так и называется 'режим отладки')
-// отладчик можно вызвать нажав кнопку 'run and debug'
-//f11 - шаг с заходом,тоесть если на пути отладчика встретится функция он зайдет в нее
-//f10 - шаг с обходом,если функция встретится он не зайдет в нее
+    
+
+    
+void print_matrix1(int[,] matrix) // функция вывода двумерного массива
+{
+    for(int i = 0;i < matrix.GetLength(0);i++)
+    {
+        for(int j = 0;j < matrix.GetLength(1);j++)
+        {
+            Console.Write(matrix[i,j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+ 
+int[,] matrix = random1_matrix(str,str1);
+
+print_matrix1(matrix);
+
+int[] IsElement1 = IsElement(matrix); // 
+Console.WriteLine($"Получившейся массив: [{string.Join(", ",IsElement1)}]");
+
+
+
+
+
 
 
 
