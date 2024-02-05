@@ -1,94 +1,92 @@
-﻿
-const int N = 20; // размерность нашей матрицы(количество строк и столбцов)
+﻿// задача,где надо найти все гластные буквы в массиве который ввел пользователь и вывести их в другой массив
 
-int[,] serialMulres = new int[N,N]; // конечный результат матрицы
+/*
+Console.Write("Введите длину массива символов: ");
 
-const int Thread = 10; // количество потоков
+int size = int.Parse(Console.ReadLine()!);
 
-int[,] RandomGenerator(int size,int size1) // создание рандомного массива
+char[] char_arr = new char[size]; // создание массива символов,передача туда длины,что ввел пользователь
+
+void char_generator(char[] char_arr) // функция заполнения массива
 {
-    Random rnd = new();
-    int[,] res = new int[size,size1];
-    for(int i = 0;i < res.GetLength(0);i++)
+    try
     {
-        for(int j = 0;j < res.GetLength(1);j++)
+        char char_input; // то число,что ввел пользователь инициализировано до цикла,чтобы каждый раз не создавать новую и новую переменную в цикле(нагружает память)
+
+        for(int i = 0;i < char_arr.Length;i++) // цикл который пройдет от начала и до конца
         {
-            res[i,j] = rnd.Next(1,101);
+            Console.Write("Введите символ: ");
+
+            char_input = char.Parse(Console.ReadLine()!); // и заполнит массив теми символами,что ввел пользователь,важно сконвертировать их,поскольку все,что вводится с терминала является типом данных(string)
+
+            char_arr[i] = char_input;
+
+            Console.WriteLine();
         }
     }
-    return res;
-}
-
-
-void PrintFunction(int[,] matrix) // вывод массива
-{
-    for(int i = 0;i < matrix.GetLength(0);i++)
+    catch
     {
-        for(int j = 0;j < matrix.GetLength(1);j++)
-        {
-            Console.Write(matrix[i,j] + " ");
-        }
-        Console.WriteLine();
+        Console.WriteLine("Символ состоит из одной буквы,цифры,спецсимвола");
     }
 }
+*/
 
 
-void equal_matrix(int[,] first_matrix,int[,] second_matrix,int start,int end)
+
+Console.Write("Введите слово: ");
+
+string input_word = Console.ReadLine()!; // слово в котором нужно найти символы
+
+Console.Write("Введите символы которые нужно: ");
+
+string find_latter = Console.ReadLine()!; // символы которые нужно найти(в виде сроки,потому что строка - это массив символов)
+
+char[] letter_on_charr_arr(string find_latter,string input_word) // будет возвращать новый массив из гласных букв
 {
-    for(int i = start;i < end;i++)
+    int quantity = 0; // сколько всего букв найдено в слове
+
+    for(int i = 0;i < find_latter.Length;i++) // пока не закончатся символы в слове (input_word)
     {
-
-        for(int k = 0;k < first_matrix.GetLength(1);k++) // столбец
+        if (input_word.Contains(find_latter[i])) // проверка на то содержит ли input_word(слово в котором надо найти определенные символы(find_latter)),поскольку с консоли вводится строка,то мы идем по ее символам
         {
+            quantity++;
 
-            for(int j = 0;j < first_matrix.GetLength(0);j++)  // строка
+        }
+    }
+
+    int index = 0;
+
+    char[] vowel_arr = new char[quantity]; // длина массив это число букв которые удалось найти
+
+    for(int j = 1;j < find_latter.Length;j++)
+    {
+        for(int i = 0;i < input_word.Length;i++)
+        {
+            if (input_word.Contains(find_latter[j]))
             {
-                serialMulres[i,k] = first_matrix[i,k] * second_matrix[j,k]; // подсчет конечного результата,serialMulres[i,k] = тоесть с начальной позиции потока(i) начинаем записывать элементы в столбец(k),которые равны смежному произведению первой и второй матрицы
-                //first_matrix[i,k] - первый параметр равен i - потому что,для первой матрицы,мы берем элементы из начальной позиции потока,тоесть из нулевого столбца(для первого потока,для второго будет уже другое значение)
-                //а для второй матрицы мы берем смежные элементы первой матрицы,тоесть мы умножаем строки первой матрицы на столбцы второй по диагонали
+                vowel_arr[index] = find_latter[j]; // заносим в массив символ,который нашли,если условие правдиво,на той букве на которой мы сейчас,то тогда заносим в массив букву на которой мы сейчас находимся
+                index++;
             }
+
+
         }
     }
+    return vowel_arr;
+
 }
 
 
-void ParallelMatrix (int[,] first_matrix,int[,] second_matrix) // принимает две матрицы
-{
-    int eachThread = N / Thread; // количество вычислительных элементов на один поток
-    var thread_list = new List<Thread>(); // список который будет запускать поток
-    for(int i = 0;i < Thread;i++) // цикл каждого потока,тоесть там 
-    {
-        int StartPos = i * eachThread; // стартовая позиция каждого потока
-        int EndPos = (i + 1) * eachThread; // конечная позиция каждого потока (i + 1) - потому что начинаем с нуля
-        if (i == Thread) // если поток последний,тоесть равен количеству
-        {
-            EndPos = N; // то тогда его конечная позиция будет равна остатку
-        }
-        thread_list.Add(new Thread(() => equal_matrix(first_matrix,second_matrix,StartPos,EndPos))); // здесь в лист мы добавляем по одному потоку и внутри потока вызываем анонимную функцию(лямбда функцию,которая как раз производит вычисления),передаем туда параметры(элементы первого массива и второго,а так же начальную и конечную позицию,после которой поток остановится и начнет выполнятся следующий)
-        thread_list[i].Start(); // запускаем поток,сразу после вычисления
-    }
-    for(int i = 0;i < Thread;i++)
-    {
-        thread_list[i].Join(); // присоединение потоков к основному,чтобы они не продолжали свою работу
-    }
-}
+/*
+char_generator(char_arr);
 
-
-int[,] first_matrix = RandomGenerator(N,N); //  заполнение первой матрицы случайными элементами
-
-int[,] second_matrix = RandomGenerator(N,N); // завполнение второй матрицы случайными элементами
-
-PrintFunction(first_matrix); // вывод первой матрицы
+Console.WriteLine($"Получившейся массив пользователя : {string.Join(", ",charr_arr)}");
+*/
 
 Console.WriteLine();
 
-PrintFunction(second_matrix); // вывод второй матрицы
+char[] vowel_arr = letter_on_charr_arr(find_latter,input_word);
 
-Console.WriteLine();
-
-ParallelMatrix(first_matrix,second_matrix); // двумерный массив который будет хранить многопоточное умножение матриц размером [N12,N12],
-
-PrintFunction(serialMulres);
+Console.WriteLine($"Массив с буквами: {string.Join(", ",vowel_arr)}" + $" Всего букв удалось найти: {vowel_arr.Length}");
 
 
 
@@ -118,21 +116,7 @@ PrintFunction(serialMulres);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
 // простая задача на угадывание случайного числа
 Random random = new();
 Random random2 = new();
@@ -252,4 +236,4 @@ while(attempt != 0)
         Console.WriteLine("Вы ввели не тот тип данных(требуется 'int')");
     }
 }
-
+*/
