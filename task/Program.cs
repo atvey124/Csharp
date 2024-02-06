@@ -68,7 +68,6 @@ char[] letter_on_charr_arr(string find_latter,string input_word) // будет �
                 index++;
             }
 
-
         }
     }
     return vowel_arr;
