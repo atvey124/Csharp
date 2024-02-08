@@ -1,110 +1,201 @@
-﻿// задача,где надо найти все гластные буквы в массиве который ввел пользователь и вывести их в другой массив
-
-/*
-Console.Write("Введите длину массива символов: ");
-
+﻿﻿Console.WriteLine("Введите размерность матрицы: ");
 int size = int.Parse(Console.ReadLine()!);
 
-char[] char_arr = new char[size]; // создание массива символов,передача туда длины,что ввел пользователь
+Console.WriteLine("Введите от какого диапазона будут генерироваться случайные числа: ");
 
-void char_generator(char[] char_arr) // функция заполнения массива
+int from = int.Parse(Console.ReadLine()!);
+
+Console.WriteLine("Введите до какого диапазона будут генерироваться случайные числа: ");
+
+int to = int.Parse(Console.ReadLine()!);
+
+int[,] RandomGenerator(int size,int from,int to)
+{
+    Random rnd = new();
+    int[,] res = new int[size,size];
+    for(int i = 0;i < res.GetLength(0);i++)
+    {
+        for(int j = 0;j < res.GetLength(1);j++)
+        {
+            res[i,j] = rnd.Next(from,to + 1);
+        }
+
+    }
+    return res;
+}
+
+void PrintFunction(int[,] arr)
+{
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1);j++)
+            Console.Write(arr[i,j] + " ");
+         Console.WriteLine();
+    }
+   
+}
+
+bool BasicTest(int[,] arr)
+{
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1) - 1;j++)
+        {
+            if( arr[i,j] > arr[i,j + 1])
+                return false;
+        }
+        
+    }
+    return true;
+}
+
+void BelowZero(int[,] arr)
+{
+    int less = 0;
+    int more = 0;
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1);j++)
+        {
+            if(arr[i,j] >= 0)
+            {
+                more++;
+            }
+            else if ( arr[i,j] < 0)
+            {
+                less++;
+            }  
+        }
+    }
+    Console.WriteLine($"Количество элементов больше нуля(для простаты эксперимента ноль взят за положительное число): {more} ");
+    Console.WriteLine($"Количество элементов меньшу нуля: {less}");
+    return;
+
+}
+
+
+bool multiply_it()
 {
     try
     {
-        char char_input; // то число,что ввел пользователь инициализировано до цикла,чтобы каждый раз не создавать новую и новую переменную в цикле(нагружает память)
-
-        for(int i = 0;i < char_arr.Length;i++) // цикл который пройдет от начала и до конца
+        Console.Write("Хотите получить квадрат отсортированной матрицы?(да/все остальные варианты преравнены к false): ");
+        string answer = Console.ReadLine()!;
+        if(answer == "да")
         {
-            Console.Write("Введите символ: ");
-
-            char_input = char.Parse(Console.ReadLine()!); // и заполнит массив теми символами,что ввел пользователь,важно сконвертировать их,поскольку все,что вводится с терминала является типом данных(string)
-
-            char_arr[i] = char_input;
-
-            Console.WriteLine();
+            return true;
         }
+        else
+        {
+            return false;
+        }
+
+            
     }
     catch
     {
-        Console.WriteLine("Символ состоит из одной буквы,цифры,спецсимвола");
+        Console.WriteLine("выберите (да/нет)");
+        return false;
     }
+    
+    
 }
-*/
 
-
-
-Console.Write("Введите слово: ");
-
-string input_word = Console.ReadLine()!; // слово в котором нужно найти символы
-
-Console.Write("Введите символы которые нужно: ");
-
-string find_latter = Console.ReadLine()!; // символы которые нужно найти(в виде сроки,потому что строка - это массив символов)
-
-char[] letter_on_charr_arr(string find_latter,string input_word) // будет возвращать новый массив из гласных букв
+int[,] square(int[,] arr,bool multiply_it)
 {
-    int quantity = 0; // сколько всего букв найдено в слове
 
-    for(int i = 0;i < find_latter.Length;i++) // пока не закончатся символы в слове (input_word)
+    if (multiply_it == true)
     {
-        if (input_word.Contains(find_latter[i])) // проверка на то содержит ли input_word(слово в котором надо найти определенные символы(find_latter)),поскольку с консоли вводится строка,то мы идем по ее символам
+        for(int i = 0;i < arr.GetLength(0);i++)
         {
-            quantity++;
-
-        }
-    }
-
-    int index = 0;
-
-    char[] vowel_arr = new char[quantity]; // длина массив это число букв которые удалось найти
-
-    for(int j = 1;j < find_latter.Length;j++)
-    {
-        for(int i = 0;i < input_word.Length;i++)
-        {
-            if (input_word.Contains(find_latter[j]))
+            for(int j = 0;j < arr.GetLength(1);j++)
             {
-                vowel_arr[index] = find_latter[j]; // заносим в массив символ,который нашли,если условие правдиво,на той букве на которой мы сейчас,то тогда заносим в массив букву на которой мы сейчас находимся
+                arr[i,j] = arr[i,j] * arr[i,j];
+            }
+        }
+        return arr;
+    }
+    else if (multiply_it == false)
+    {
+        return arr;
+    }
+    return arr;
+        
+}
+
+
+int[,] CountingSort(int[,] arr,int size)
+{
+
+    int[,] sort_matrix = new int[size,size];
+
+
+    for(int k = 0;k < sort_matrix.GetLength(0);k++ )
+    {
+        int min = arr[k,0];
+        int max = arr[k,0];
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            if ( min > arr[k,i])
+            {
+                min = arr[k,i];
+            }
+        }
+
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            if ( max < arr[k,i])
+            {
+                max = arr[k,i];
+            }
+        }
+        int offset = -min;
+        int[] help_arr = new int[max + offset + 1];
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            help_arr[arr[k,i] + offset]++;
+        }
+
+        int index = 0;
+        for(int i = 0;i < help_arr.Length;i++)
+        {
+            for(int j = 0;j < help_arr[i];j++)
+            {
+                sort_matrix[k,index] = i - offset;
                 index++;
             }
-
         }
-    }
-    return vowel_arr;
 
+
+    }
+    return sort_matrix;
 }
 
 
-/*
-char_generator(char_arr);
+int[,] matrix = RandomGenerator(size,from,to);
 
-Console.WriteLine($"Получившейся массив пользователя : {string.Join(", ",charr_arr)}");
-*/
+Console.WriteLine("Исходный массив: ");
 
-Console.WriteLine();
+PrintFunction(matrix);
 
-char[] vowel_arr = letter_on_charr_arr(find_latter,input_word);
+Console.WriteLine(BasicTest(matrix));
 
-Console.WriteLine($"Массив с буквами: {string.Join(", ",vowel_arr)}" + $" Всего букв удалось найти: {vowel_arr.Length}");
+int[,] counting_matrix = CountingSort(matrix,size);
 
+Console.WriteLine("Отсорт.массив: ");
 
+PrintFunction(counting_matrix);
 
+Console.WriteLine(BasicTest(counting_matrix));
 
+BelowZero(counting_matrix);
 
+bool multi = multiply_it();
 
+square(counting_matrix,multi);
 
+Console.WriteLine("квадрат отсортированной матрицы: ");
 
-
-
-
-
-
-
-
-
-
-
-
+PrintFunction(counting_matrix);
 
 
 

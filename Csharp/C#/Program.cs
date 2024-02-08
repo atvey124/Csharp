@@ -1818,6 +1818,7 @@ void countingsort(int[] quicksort)
 }
 
 
+// сортировка выбором в двумерном массиве(матрице),где нужно отсортировать входной случайные двумерный массив и вывести сколько положительных и отрицательных элементов встретилось,кроме того написать юнит тест
 Console.WriteLine("Введите длину массива");
 int size = int.Parse(Console.ReadLine()!);
 
@@ -1832,6 +1833,154 @@ PrintFunction(quicksort);
 Console.WriteLine();
 
 Console.Write(TestFunction(quicksort));
+
+
+Console.WriteLine("Введите размерность матрицы: ");
+int size = int.Parse(Console.ReadLine()!);
+
+Console.WriteLine("Введите от какого диапазона будут генерироваться случайные числа: ");
+
+int from = int.Parse(Console.ReadLine()!);
+
+Console.WriteLine("Введите до какого диапазона будут генерироваться случайные числа: ");
+
+int to = int.Parse(Console.ReadLine()!);
+
+int[,] RandomGenerator(int size,int from,int to)
+{
+    Random rnd = new();
+    int[,] res = new int[size,size];
+    for(int i = 0;i < res.GetLength(0);i++)
+    {
+        for(int j = 0;j < res.GetLength(1);j++)
+        {
+            res[i,j] = rnd.Next(from,to + 1);
+        }
+
+    }
+    return res;
+}
+
+void PrintFunction(int[,] arr)
+{
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1);j++)
+            Console.Write(arr[i,j] + " ");
+         Console.WriteLine();
+    }
+   
+}
+
+bool BasicTest(int[,] arr)
+{
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1) - 1;j++)
+        {
+            if( arr[i,j] > arr[i,j + 1])
+                return false;
+        }
+        
+    }
+    return true;
+}
+
+void BelowZero(int[,] arr)
+{
+    int less = 0;
+    int more = 0;
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1);j++)
+        {
+            if(arr[i,j] >= 0)
+            {
+                more++;
+            }
+            else if ( arr[i,j] < 0)
+            {
+                less++;
+            }  
+        }
+    }
+    Console.WriteLine($"Количество элементов больше нуля(для простаты эксперимента ноль взят за положительное число): {more} ");
+    Console.WriteLine($"Количество элементов меньшу нуля: {less}");
+    return;
+
+}
+
+
+
+int[,] CountingSort(int[,] arr,int size)
+{
+
+    int[,] sort_matrix = new int[size,size];
+
+
+    for(int k = 0;k < sort_matrix.GetLength(0);k++ )
+    {
+        int min = arr[k,0];
+        int max = arr[k,0];
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            if ( min > arr[k,i])
+            {
+                min = arr[k,i];
+            }
+        }
+
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            if ( max < arr[k,i])
+            {
+                max = arr[k,i];
+            }
+        }
+        int offset = -min;
+        int[] help_arr = new int[max + offset + 1];
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            help_arr[arr[k,i] + offset]++;
+        }
+
+        int index = 0;
+        for(int i = 0;i < help_arr.Length;i++)
+        {
+            for(int j = 0;j < help_arr[i];j++)
+            {
+                sort_matrix[k,index] = i - offset;
+                index++;
+            }
+        }
+
+
+    }
+    return sort_matrix;
+}
+
+
+int[,] matrix = RandomGenerator(size,from,to);
+
+Console.WriteLine("Исходный массив: ");
+
+PrintFunction(matrix);
+
+Console.WriteLine(BasicTest(matrix));
+
+int[,] counting_matrix = CountingSort(matrix,size);
+
+Console.WriteLine("Отсорт.массив: ");
+
+PrintFunction(counting_matrix);
+
+Console.WriteLine(BasicTest(counting_matrix));
+
+BelowZero(counting_matrix);
+
+
+
+
 
 
 
@@ -2058,6 +2207,208 @@ Console.WriteLine($"строка из массива символов: {char_str
 string str_to_char = char_string(char_arr);
 
 string_to_char_arr(str_to_char);
+
+
+// задача где дается матрица с размерностью,что выберет пользователь и диапазон чисел,что выберет пользователь,надо отсортировать матрицу и предложить пользователю возвести в квадрат элементы отсорт.матрицы
+Console.WriteLine("Введите размерность матрицы: ");
+int size = int.Parse(Console.ReadLine()!);
+
+Console.WriteLine("Введите от какого диапазона будут генерироваться случайные числа: ");
+
+int from = int.Parse(Console.ReadLine()!);
+
+Console.WriteLine("Введите до какого диапазона будут генерироваться случайные числа: ");
+
+int to = int.Parse(Console.ReadLine()!);
+
+int[,] RandomGenerator(int size,int from,int to)
+{
+    Random rnd = new();
+    int[,] res = new int[size,size];
+    for(int i = 0;i < res.GetLength(0);i++)
+    {
+        for(int j = 0;j < res.GetLength(1);j++)
+        {
+            res[i,j] = rnd.Next(from,to + 1);
+        }
+
+    }
+    return res;
+}
+
+void PrintFunction(int[,] arr)
+{
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1);j++)
+            Console.Write(arr[i,j] + " ");
+         Console.WriteLine();
+    }
+   
+}
+
+bool BasicTest(int[,] arr)
+{
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1) - 1;j++)
+        {
+            if( arr[i,j] > arr[i,j + 1])
+                return false;
+        }
+        
+    }
+    return true;
+}
+
+void BelowZero(int[,] arr)
+{
+    int less = 0;
+    int more = 0;
+    for(int i = 0;i < arr.GetLength(0);i++)
+    {
+        for(int j = 0;j < arr.GetLength(1);j++)
+        {
+            if(arr[i,j] >= 0)
+            {
+                more++;
+            }
+            else if ( arr[i,j] < 0)
+            {
+                less++;
+            }  
+        }
+    }
+    Console.WriteLine($"Количество элементов больше нуля(для простаты эксперимента ноль взят за положительное число): {more} ");
+    Console.WriteLine($"Количество элементов меньшу нуля: {less}");
+    return;
+
+}
+
+
+bool multiply_it()
+{
+    try
+    {
+        Console.Write("Хотите получить квадрат отсортированной матрицы?(да/все остальные варианты преравнены к false): ");
+        string answer = Console.ReadLine()!;
+        if(answer == "да")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+            
+    }
+    catch
+    {
+        Console.WriteLine("выберите (да/нет)");
+        return false;
+    }
+    
+    
+}
+
+int[,] square(int[,] arr,bool multiply_it)
+{
+
+    if (multiply_it == true)
+    {
+        for(int i = 0;i < arr.GetLength(0);i++)
+        {
+            for(int j = 0;j < arr.GetLength(1);j++)
+            {
+                arr[i,j] = arr[i,j] * arr[i,j];
+            }
+        }
+        return arr;
+    }
+    else if (multiply_it == false)
+    {
+        return arr;
+    }
+    return arr;
+        
+}
+
+
+int[,] CountingSort(int[,] arr,int size)
+{
+
+    int[,] sort_matrix = new int[size,size];
+
+
+    for(int k = 0;k < sort_matrix.GetLength(0);k++ )
+    {
+        int min = arr[k,0];
+        int max = arr[k,0];
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            if ( min > arr[k,i])
+            {
+                min = arr[k,i];
+            }
+        }
+
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            if ( max < arr[k,i])
+            {
+                max = arr[k,i];
+            }
+        }
+        int offset = -min;
+        int[] help_arr = new int[max + offset + 1];
+        for(int i = 0;i < arr.GetLength(1);i++)
+        {
+            help_arr[arr[k,i] + offset]++;
+        }
+
+        int index = 0;
+        for(int i = 0;i < help_arr.Length;i++)
+        {
+            for(int j = 0;j < help_arr[i];j++)
+            {
+                sort_matrix[k,index] = i - offset;
+                index++;
+            }
+        }
+
+
+    }
+    return sort_matrix;
+}
+
+
+int[,] matrix = RandomGenerator(size,from,to);
+
+Console.WriteLine("Исходный массив: ");
+
+PrintFunction(matrix);
+
+Console.WriteLine(BasicTest(matrix));
+
+int[,] counting_matrix = CountingSort(matrix,size);
+
+Console.WriteLine("Отсорт.массив: ");
+
+PrintFunction(counting_matrix);
+
+Console.WriteLine(BasicTest(counting_matrix));
+
+BelowZero(counting_matrix);
+
+bool multi = multiply_it();
+
+square(counting_matrix,multi);
+
+Console.WriteLine("квадрат отсортированной матрицы: ");
+
+PrintFunction(counting_matrix);
+
 
 
 
