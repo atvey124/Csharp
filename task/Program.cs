@@ -1,201 +1,78 @@
-﻿﻿Console.WriteLine("Введите размерность матрицы: ");
-int size = int.Parse(Console.ReadLine()!);
-
-Console.WriteLine("Введите от какого диапазона будут генерироваться случайные числа: ");
-
-int from = int.Parse(Console.ReadLine()!);
-
-Console.WriteLine("Введите до какого диапазона будут генерироваться случайные числа: ");
-
-int to = int.Parse(Console.ReadLine()!);
-
-int[,] RandomGenerator(int size,int from,int to)
+﻿char[] ConvertFunction(string str)
 {
-    Random rnd = new();
-    int[,] res = new int[size,size];
-    for(int i = 0;i < res.GetLength(0);i++)
+    char[] StringToStr = new char[str.Length];
+    for(int i = 0;i < StringToStr.Length;i++)
     {
-        for(int j = 0;j < res.GetLength(1);j++)
-        {
-            res[i,j] = rnd.Next(from,to + 1);
-        }
-
+        StringToStr[i] = str[i];
     }
-    return res;
+    return StringToStr;
 }
 
-void PrintFunction(int[,] arr)
+
+void PrintFunction(char[] new1)
 {
-    for(int i = 0;i < arr.GetLength(0);i++)
+    for(int i = 0;i < new1.Length;i++)
     {
-        for(int j = 0;j < arr.GetLength(1);j++)
-            Console.Write(arr[i,j] + " ");
-         Console.WriteLine();
+        Console.Write(new1[i] + " ");
     }
-   
 }
 
-bool BasicTest(int[,] arr)
-{
-    for(int i = 0;i < arr.GetLength(0);i++)
-    {
-        for(int j = 0;j < arr.GetLength(1) - 1;j++)
-        {
-            if( arr[i,j] > arr[i,j + 1])
-                return false;
-        }
-        
-    }
-    return true;
-}
 
-void BelowZero(int[,] arr)
+string ReverseCharArr(char[] new1)
 {
-    int less = 0;
-    int more = 0;
-    for(int i = 0;i < arr.GetLength(0);i++)
+    string result = "";
+    int input = new1.Length - 1;
+    for(int i = 0;i < new1.Length;i++)
     {
-        for(int j = 0;j < arr.GetLength(1);j++)
-        {
-            if(arr[i,j] >= 0)
-            {
-                more++;
-            }
-            else if ( arr[i,j] < 0)
-            {
-                less++;
-            }  
-        }
+        result += new1[input];
+        input--;
     }
-    Console.WriteLine($"Количество элементов больше нуля(для простаты эксперимента ноль взят за положительное число): {more} ");
-    Console.WriteLine($"Количество элементов меньшу нуля: {less}");
-    return;
+
+    return result;
 
 }
 
 
-bool multiply_it()
+bool PalindromFunction(string str,string new_str)
 {
-    try
+    str = str.ToLower();
+    new_str = new_str.ToLower();
+    if(str != new_str)
     {
-        Console.Write("Хотите получить квадрат отсортированной матрицы?(да/все остальные варианты преравнены к false): ");
-        string answer = Console.ReadLine()!;
-        if(answer == "да")
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-
-            
-    }
-    catch
-    {
-        Console.WriteLine("выберите (да/нет)");
         return false;
     }
-    
-    
-}
+    return true;
 
-int[,] square(int[,] arr,bool multiply_it)
-{
-
-    if (multiply_it == true)
-    {
-        for(int i = 0;i < arr.GetLength(0);i++)
-        {
-            for(int j = 0;j < arr.GetLength(1);j++)
-            {
-                arr[i,j] = arr[i,j] * arr[i,j];
-            }
-        }
-        return arr;
-    }
-    else if (multiply_it == false)
-    {
-        return arr;
-    }
-    return arr;
-        
 }
 
 
-int[,] CountingSort(int[,] arr,int size)
-{
 
-    int[,] sort_matrix = new int[size,size];
+Console.Write("Введите строку: ");
 
-
-    for(int k = 0;k < sort_matrix.GetLength(0);k++ )
-    {
-        int min = arr[k,0];
-        int max = arr[k,0];
-        for(int i = 0;i < arr.GetLength(1);i++)
-        {
-            if ( min > arr[k,i])
-            {
-                min = arr[k,i];
-            }
-        }
-
-        for(int i = 0;i < arr.GetLength(1);i++)
-        {
-            if ( max < arr[k,i])
-            {
-                max = arr[k,i];
-            }
-        }
-        int offset = -min;
-        int[] help_arr = new int[max + offset + 1];
-        for(int i = 0;i < arr.GetLength(1);i++)
-        {
-            help_arr[arr[k,i] + offset]++;
-        }
-
-        int index = 0;
-        for(int i = 0;i < help_arr.Length;i++)
-        {
-            for(int j = 0;j < help_arr[i];j++)
-            {
-                sort_matrix[k,index] = i - offset;
-                index++;
-            }
-        }
+string str = Console.ReadLine()!;
 
 
-    }
-    return sort_matrix;
-}
+
+char[] new1 = ConvertFunction(str);
+
+Console.Write("Получившейся массив из строки: ");
+PrintFunction(new1);
+
+Console.WriteLine();
+
+string reverseString = ReverseCharArr(new1);
+Console.WriteLine($"Перевернутая строка: {reverseString}");
+
+Console.WriteLine($"Ответ,является ли палиндромом: {PalindromFunction(str,reverseString)}");
 
 
-int[,] matrix = RandomGenerator(size,from,to);
 
-Console.WriteLine("Исходный массив: ");
 
-PrintFunction(matrix);
 
-Console.WriteLine(BasicTest(matrix));
 
-int[,] counting_matrix = CountingSort(matrix,size);
 
-Console.WriteLine("Отсорт.массив: ");
 
-PrintFunction(counting_matrix);
 
-Console.WriteLine(BasicTest(counting_matrix));
-
-BelowZero(counting_matrix);
-
-bool multi = multiply_it();
-
-square(counting_matrix,multi);
-
-Console.WriteLine("квадрат отсортированной матрицы: ");
-
-PrintFunction(counting_matrix);
 
 
 
