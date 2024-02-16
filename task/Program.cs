@@ -1,4 +1,150 @@
-﻿
+﻿//задача на сортировку дробной матрицы по целому числу
+
+Console.WriteLine("Введите диапазон от: ");
+
+int from = int.Parse(Console.ReadLine()!);
+
+Console.WriteLine("Введите диапазон до: ");
+
+int to = int.Parse(Console.ReadLine()!);
+
+Console.WriteLine("Введите размер матрицы: ");
+
+int size = int.Parse(Console.ReadLine()!);
+
+double[,] RandomGenerator(int from,int to,int size)
+{
+    
+    Random random = new Random();
+    double min = from;
+    double max = to;
+    double range = max - min;
+    double[,] double_arr = new double[size,size];
+    for (int i = 0; i < double_arr.GetLength(0); i++)
+    {
+        for(int j = 0;j < double_arr.GetLength(1);j++)
+        {
+            double sample = random.NextDouble();
+            double scaled = (sample * range) + min;
+            double_arr[i,j] = (float)scaled;
+
+        }
+        
+    }
+    return double_arr;
+}
+
+void PrintFunction(double[,] double_arr)
+{
+    for(int i = 0;i < double_arr.GetLength(0);i++)
+    {
+        Console.Write($"Строка {i + 1} " + "    ");
+        for(int j = 0;j < double_arr.GetLength(1);j++)
+        {
+            if (double_arr[i,j] != 0)
+                Console.Write(double_arr[i,j] + "    ");
+        }
+        Console.WriteLine();
+        
+    }
+}
+
+double[,] SortFunction(double[,] RandomArr,double from,double to,int size,int to1)
+{
+    
+    double range3 = from;
+    double range4 = from + 1.0;
+    int[] size_index = new int[to1 - 1];
+    int size_of_row = 0;
+    for(int k = 0;k < to1 - 1;k++)
+    {
+        for(int i = 0;i < RandomArr.GetLength(1);i++)
+        {
+            for(int j = 0;j < RandomArr.GetLength(1);j++)
+            {
+                if (RandomArr[i,j] >= range3 && RandomArr[i,j] <= range4)
+                    size_of_row++;
+
+            }
+
+
+        }
+        range3 += 1.0;
+        range4 += 1.0;
+        size_index[k] = size_of_row;
+        size_of_row = 0;
+        
+    }
+    int max = size_index.Max();
+    double[,] SortedArray = new double[to1 - 1,max];
+
+    range3 = from;
+    range4 = from + 1;
+    int current_index = 0;
+    for(int k = 0;k < to1 - 1;k++)
+    {
+        for(int i = 0;i < RandomArr.GetLength(1);i++)
+        {
+            for(int j = 0;j < RandomArr.GetLength(1);j++)
+            {
+                if (RandomArr[i,j] >= range3 && RandomArr[i,j] <= range4)
+                {
+
+                    SortedArray[k,current_index] = RandomArr[i,j];
+                    
+
+                    current_index++;
+                }
+
+            }
+
+
+        }
+        current_index = 0;
+        range3 += 1.0;
+        range4 += 1.0;
+    }
+    return SortedArray;
+        
+        
+}
+
+
+double[,] RandomArr = RandomGenerator(from,to,size);
+
+PrintFunction(RandomArr);
+
+double from2 = from;
+double to2 = to;
+
+double[,] SortArr = SortFunction(RandomArr,from2,to2,size,to);
+
+Console.WriteLine();
+PrintFunction(SortArr);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
