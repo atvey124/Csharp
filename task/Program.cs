@@ -1,21 +1,6 @@
 ﻿
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 // простая задача на угадывание случайного числа
 Random random = new();
@@ -136,4 +121,65 @@ while(attempt != 0)
         Console.WriteLine("Вы ввели не тот тип данных(требуется 'int')");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+Random rnd = new();
+Console.WriteLine("Введите диапазон от: ");
+int from = int.Parse(Console.ReadLine()!);
+Console.WriteLine("Введите диапазон до: ");
+int to = int.Parse(Console.ReadLine()!);
+int input_num = rnd.Next(from,to + 1);
+Console.WriteLine(input_num);
+
+
+
+
+int GuessFunction(int from,int to,int input_num)
+{
+    int attempt = 1;
+    int[] input_num_arr = new int[to + 1];
+    for(int i = 0;i < input_num_arr.Length;i++)
+    {
+        input_num_arr[i] = i;
+        //Console.Write(input_num_arr[i] + " ");
+    }
+    Console.WriteLine();
+
+    int start = from;
+    int end = input_num_arr.Length - 1;
+    while( start <= end)
+    {
+        int mid = (start + end) / 2;
+        if (input_num_arr[mid] == input_num)
+        {
+            Console.WriteLine(input_num_arr[mid]);
+            Console.WriteLine($"программа угадала число с {attempt} попытки");
+            return mid;
+        }
+        else if(input_num_arr[mid] > input_num)
+        {
+            end = mid - 1;
+            attempt++;
+        }
+        else if(input_num_arr[mid] < input_num)
+        {
+            start = mid + 1;
+            attempt++;
+        }
+    }
+    return 0;
+}
+
+
+GuessFunction(from,to,input_num);
+
 */
