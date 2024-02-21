@@ -1,5 +1,206 @@
-﻿//задача на сортировку дробной матрицы по целому числу
+﻿Console.Write("Введите от какого диапазона будут генерироваться случайные дробные числа: ");
 
+int from = int.Parse(Console.ReadLine()!);
+
+Console.Write("Введите до какого диапазона будут генерироваться случайные дробные числа: ");
+
+int to = int.Parse(Console.ReadLine()!);
+
+Console.Write("Введите размер матрицы: ");
+
+int size = int.Parse(Console.ReadLine()!);
+
+
+double[,] RandomGenerator(int from,int to,int size)
+{
+    
+    Random random = new Random();
+    double min = from;
+    double max = to;
+    double range = max - min;
+    double[,] double_arr = new double[size,size];
+    for (int i = 0; i < double_arr.GetLength(0); i++)
+    {
+        for(int j = 0;j < double_arr.GetLength(1);j++)
+        {
+            double sample = random.NextDouble();
+            double scaled = (sample * range) + min;
+            double_arr[i,j] = (float)scaled;
+
+        }
+        
+    }
+    return double_arr;
+}
+
+
+void PrintFunction(double[,] double_arr)
+{
+    for(int i = 0;i < double_arr.GetLength(0);i++)
+    {
+        Console.Write($"Столбец {i + 1} ");
+        for(int j = 0;j < double_arr.GetLength(1);j++)
+        {
+            Console.Write(double_arr[i,j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+
+bool TestFunction(double[,] RandomArr)
+{
+    double index = 1.0;
+    double index1 = index + 1.0;
+    for(int i = 0;i < RandomArr.GetLength(0);i++)
+    {
+        for(int j = 0;j < RandomArr.GetLength(1);j++)
+        {
+            if(RandomArr[i,j] != 0.0)
+            {
+                
+                if(RandomArr[i,j] < index || RandomArr[i,j] > index1)
+                {
+                    return false;
+                    
+                }
+                else
+                {
+                    continue;
+                }
+
+                    
+            }
+            else
+            {
+                continue;   
+            }
+                
+        }
+        index++;
+        index1++;
+    }
+    return true;
+}
+
+
+
+
+double[,] SortMatrix(double[,] RandomArr,int from,int to)
+{
+    int[] new_size = new int[to - 1];
+
+    int quantity = 0;
+
+    double to1 = from;
+
+    double to2 = from + 1.0;
+
+    
+
+
+    for(int k = 0;k < to - 1;k++)
+    {
+        for(int i = 0;i < RandomArr.GetLength(0);i++)
+        {
+            for(int j = 0;j < RandomArr.GetLength(1);j++)
+            {
+                if(RandomArr[i,j] >= to1 && RandomArr[i,j] <= to2)
+                {
+                    quantity++;
+                }
+            }
+        }
+        to1++;
+        to2++;
+        new_size[k] = quantity;
+
+        quantity = 0;
+    }
+
+    int index = 0;
+
+    int max_index = new_size.Max();
+
+    double[,] SortMatrix = new double[to - 1,max_index];
+    index = 0;
+
+    to1 = from;
+
+    to2 = from + 1.0;
+
+
+    for(int k = 0;k < to - 1;k++)
+    {
+        for(int i = 0;i < RandomArr.GetLength(0);i++)
+        {
+            for(int j = 0;j < RandomArr.GetLength(1);j++)
+            {
+                if(RandomArr[i,j] >= to1 && RandomArr[i,j] <= to2)
+                {
+                    SortMatrix[k,index] = RandomArr[i,j];
+                    index++;
+                }
+            }
+        }
+        to1++;
+        to2++;
+        index = 0;
+
+    }
+
+
+    return SortMatrix;
+
+}
+
+
+double[,] double_arr = RandomGenerator(from,to,size);
+
+PrintFunction(double_arr);
+
+Console.WriteLine(TestFunction(double_arr));
+
+double[,] double_sort_matrix = SortMatrix(double_arr,from,to);
+
+PrintFunction(double_sort_matrix);
+
+Console.WriteLine(TestFunction(double_sort_matrix));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//задача на сортировку дробной матрицы по целому числу
+/*
 Console.WriteLine("Введите диапазон от: ");
 
 int from = int.Parse(Console.ReadLine()!);
@@ -121,6 +322,85 @@ double[,] SortArr = SortFunction(RandomArr,from2,to2,size,to);
 
 Console.WriteLine();
 PrintFunction(SortArr);
+
+
+
+
+Random rnd = new();
+Console.WriteLine("Введите диапазон от: ");
+int from = int.Parse(Console.ReadLine()!);
+Console.WriteLine("Введите диапазон до: ");
+int to = int.Parse(Console.ReadLine()!);
+int input_num = rnd.Next(from,to + 1);
+Console.WriteLine(input_num);
+
+
+
+
+int GuessFunction(int from,int to,int input_num)
+{
+    int attempt = 1;
+    int[] input_num_arr = new int[to + 1];
+    for(int i = 0;i < input_num_arr.Length;i++)
+    {
+        input_num_arr[i] = i;
+        //Console.Write(input_num_arr[i] + " ");
+    }
+    Console.WriteLine();
+
+    int start = from;
+    int end = input_num_arr.Length - 1;
+    while( start <= end)
+    {
+        int mid = (start + end) / 2;
+        if (input_num_arr[mid] == input_num)
+        {
+            Console.WriteLine(input_num_arr[mid]);
+            Console.WriteLine($"программа угадала число с {attempt} попытки");
+            return mid;
+        }
+        else if(input_num_arr[mid] > input_num)
+        {
+            end = mid - 1;
+            attempt++;
+        }
+        else if(input_num_arr[mid] < input_num)
+        {
+            start = mid + 1;
+            attempt++;
+        }
+    }
+    return 0;
+}
+
+
+GuessFunction(from,to,input_num);
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -271,61 +551,10 @@ while(attempt != 0)
 
 
 
-
-
-
-
-
-
-
-Random rnd = new();
-Console.WriteLine("Введите диапазон от: ");
-int from = int.Parse(Console.ReadLine()!);
-Console.WriteLine("Введите диапазон до: ");
-int to = int.Parse(Console.ReadLine()!);
-int input_num = rnd.Next(from,to + 1);
-Console.WriteLine(input_num);
-
-
-
-
-int GuessFunction(int from,int to,int input_num)
-{
-    int attempt = 1;
-    int[] input_num_arr = new int[to + 1];
-    for(int i = 0;i < input_num_arr.Length;i++)
-    {
-        input_num_arr[i] = i;
-        //Console.Write(input_num_arr[i] + " ");
-    }
-    Console.WriteLine();
-
-    int start = from;
-    int end = input_num_arr.Length - 1;
-    while( start <= end)
-    {
-        int mid = (start + end) / 2;
-        if (input_num_arr[mid] == input_num)
-        {
-            Console.WriteLine(input_num_arr[mid]);
-            Console.WriteLine($"программа угадала число с {attempt} попытки");
-            return mid;
-        }
-        else if(input_num_arr[mid] > input_num)
-        {
-            end = mid - 1;
-            attempt++;
-        }
-        else if(input_num_arr[mid] < input_num)
-        {
-            start = mid + 1;
-            attempt++;
-        }
-    }
-    return 0;
-}
-
-
-GuessFunction(from,to,input_num);
-
 */
+
+
+
+
+
+
