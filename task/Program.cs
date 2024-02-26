@@ -1,398 +1,254 @@
-﻿Console.Write("Введите от какого диапазона будут генерироваться случайные дробные числа: ");
+﻿Console.WriteLine("Приветствую тебя,в данной игре тебе нужно угадать загаданное программой число,каждый раз когда ты угадаешь,тебе будет даваться столько очков,сколько чисел в диапазоне,цель - набрать 1000 очков");
 
-int from = int.Parse(Console.ReadLine()!);
+int number_of_functions = 0;
+long FactorialFunction(int num)
+{
+    long sum = 0;
+    for(int i = 1;i < num - 1;i++)
+    {
+        sum += i * i + 1;
+    }
+    number_of_functions++;
+    return sum;
+}
 
-Console.Write("Введите до какого диапазона будут генерироваться случайные дробные числа: ");
-
-int to = int.Parse(Console.ReadLine()!);
-
-Console.Write("Введите размер матрицы: ");
-
-int size = int.Parse(Console.ReadLine()!);
-
-
-double[,] RandomGenerator(int from,int to,int size)
+long SquareNum(int num)
 {
     
-    Random random = new Random();
-    double min = from;
-    double max = to;
-    double range = max - min;
-    double[,] double_arr = new double[size,size];
-    for (int i = 0; i < double_arr.GetLength(0); i++)
-    {
-        for(int j = 0;j < double_arr.GetLength(1);j++)
-        {
-            double sample = random.NextDouble();
-            double scaled = (sample * range) + min;
-            double_arr[i,j] = (float)scaled;
+    number_of_functions++;
+    return num * num;
+}
 
-        }
-        
-    }
-    return double_arr;
+string SymbolsStr(int num)
+{
+    string str = "";
+    for(int i = 0;i < num - 1;i++)
+        str += "s";
+    number_of_functions++;
+    return str;
+}
+
+long four_dimensional_matrix(int num)
+{
+    long num1 = num * num;
+    return num * num1;
 }
 
 
-void PrintFunction(double[,] double_arr)
-{
-    for(int i = 0;i < double_arr.GetLength(0);i++)
-    {
-        Console.Write($"Столбец {i + 1} ");
-        for(int j = 0;j < double_arr.GetLength(1);j++)
-        {
-            Console.Write(double_arr[i,j] + " ");
-        }
-        Console.WriteLine();
-    }
-}
 
 
-bool TestFunction(double[,] RandomArr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int complete_game = 0;
+
+int simple_game(int[] best_score)
 {
-    double index = 1.0;
-    double index1 = index + 1.0;
-    for(int i = 0;i < RandomArr.GetLength(0);i++)
+    int max = best_score.Max();
+    Console.WriteLine();
+    Console.WriteLine();
+    Console.WriteLine($"Ваш лучший результат: {max}");
+    int score = 0;
+    int complite_level = 1;
+    while(true)
     {
-        for(int j = 0;j < RandomArr.GetLength(1);j++)
+        while(true)
         {
-            if(RandomArr[i,j] != 0.0)
+            try
             {
-                
-                if(RandomArr[i,j] < index || RandomArr[i,j] > index1)
+                int from = 0;
+                int to = 100 * complite_level;
+                Random rnd = new();
+                Console.Write("Введи количество попыток,каждая попытка отнимает одно очко: ");
+                int attempt = int.Parse(Console.ReadLine()!);
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine($"Текущий диапазон от {from} до {to}");
+                score = score - attempt;
+                int random_number = rnd.Next(from,to + 1);
+                Console.WriteLine(random_number);
+                Random rnd1 = new();
+                int size = rnd1.Next(1,number_of_functions + 1);
+
+                switch(size)
                 {
-                    return false;
-                    
+                    case 1:
+                        Console.WriteLine($"ПОДСКАЗКА:число равно размерности матрицы на {four_dimensional_matrix(random_number)} элементов");
+                        break;
+                    case 2:
+                        Console.WriteLine($"ПОДСКАЗКА:квадратом этого числа является: {SquareNum(random_number)}");
+                        break;
+                    case 3:
+                        Console.WriteLine($"ПОДСКАЗКА:факториалом этого числа равна сумма {FactorialFunction(random_number)} ");
+                        break;
+                    case 4:
+                        Console.WriteLine($"Подсказка:число равно символам в этой строке: {SymbolsStr(random_number)}");
+                        break;
                 }
-                else
+
+                if(complite_level % 3 == 0)
+                {
+                    Random rnd2 = new();
+                    int random_task = rnd2.Next(1,2 + 1);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("Каждые два уровня будет даваться шанс заработать дополнительные очки(200),ответив на один вопрос");
+                    Console.WriteLine("Если же ты дашь не верный ответ,ты проиграешь");
+                    Console.WriteLine("Примешь ли ты участие(да/нет): ");
+                    string yes_no = Console.ReadLine()!;
+                    yes_no.ToLower();
+                    if(yes_no == "да")
+                    {
+                        switch(random_task)
+                        {
+                            case 1:
+                                Console.Write("чем в программирование является формула Эйлера,ответ должен состоять из одного слова: ");
+                                string answer = Console.ReadLine()!;
+                                answer.ToLower();
+                                if(answer == "цикл")
+                                {
+                                    Console.WriteLine("Поздравляю ты выиграл и заработал 200 очков");
+                                    score += 200;
+                                    Console.WriteLine($"Текущие очки {score}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Ты проиграл");
+                                    Console.WriteLine($"Всего очков ты набрал: {score}");
+                                    complete_game++;
+                                    return score;
+                                }
+                                break;
+                            case 2:
+                                Console.Write("Что такое http: в url адресе,ответ должен состоять из одного слово: ");
+                                string answer1 = Console.ReadLine()!;
+                                answer1.ToLower();
+                                if(answer1 == "протокол")
+                                {
+                                    Console.WriteLine("Поздравляю ты выиграл и заработал 200 очков");
+                                    score += 200;
+                                    Console.WriteLine($"Текущие очки {score}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Ты проиграл");
+                                    Console.WriteLine($"Всего очков ты набрал: {score}");
+                                    complete_game++;
+                                    return score;
+                                }
+                                break;
+
+                        }
+                    }
+
+                }
+
+                while(attempt > 0)
+                {
+                    try{
+                        Console.Write($"Угадай число(lv{complite_level}),осталось попыток -- {attempt}: ");
+                        
+                        int input_num = int.Parse(Console.ReadLine()!);
+                        if(input_num == random_number)
+                        {
+                            complite_level++;
+                            Console.WriteLine();
+                            Console.WriteLine($"Поздравляю,ты выиграл и перешол на уровень {complite_level}");
+                            score += to;
+                            Console.WriteLine($"Текущий счет {score}");
+                                    
+                            break;
+                        }
+                        else if(input_num < random_number)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Загаданное число больше");
+                            
+                            attempt--;
+                        }
+                        else if(input_num > random_number)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Загаданное число меньше");
+                            attempt--;
+                        }
+                        Console.WriteLine();
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Ты ввел не корректный тип данных,будь внимателен");
+                    }
+
+                }
+                if(score >= 1000 && score <= 1500)
+                {
+                    Console.WriteLine("Ты прошел игру,поздравляю");
+                    Console.WriteLine($"Всего очков ты набрал: {score}");
+                    Console.WriteLine("Хочешь продолжить в свободном режиме?(да/нет): ");
+                    string input_str = Console.ReadLine()!;
+                    if(input_str == "да")
+                    {
+                        continue;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Игра окончена");
+                        complete_game++; 
+                        return score;
+                    }
+                        
+                        
+                }
+                if(attempt == 0)
+                {
+                    Console.WriteLine($"Ты проиграл на уровне {complite_level}");
+                    Console.WriteLine($"Набрав очков: {score}");
+                }
+                Console.WriteLine("Хочешь продолжить(Да/Нет)?: ");
+                string stop = Console.ReadLine()!;
+                stop.ToLower();
+                if(stop == "да")
                 {
                     continue;
                 }
-
-                    
-            }
-            else
-            {
-                continue;   
-            }
-                
-        }
-        index++;
-        index1++;
-    }
-    return true;
-}
-
-
-
-
-double[,] SortMatrix(double[,] RandomArr,int from,int to)
-{
-    int[] new_size = new int[to - 1];
-
-    int quantity = 0;
-
-    double to1 = from;
-
-    double to2 = from + 1.0;
-
-    
-
-
-    for(int k = 0;k < to - 1;k++)
-    {
-        for(int i = 0;i < RandomArr.GetLength(0);i++)
-        {
-            for(int j = 0;j < RandomArr.GetLength(1);j++)
-            {
-                if(RandomArr[i,j] >= to1 && RandomArr[i,j] <= to2)
+                else
                 {
-                    quantity++;
+                    Console.WriteLine($"Всего очков ты набрал: {score}");
+                    complete_game++; 
+                    return score;
                 }
             }
-        }
-        to1++;
-        to2++;
-        new_size[k] = quantity;
 
-        quantity = 0;
-    }
-
-    int index = 0;
-
-    int max_index = new_size.Max();
-
-    double[,] SortMatrix = new double[to - 1,max_index];
-    index = 0;
-
-    to1 = from;
-
-    to2 = from + 1.0;
-
-
-    for(int k = 0;k < to - 1;k++)
-    {
-        for(int i = 0;i < RandomArr.GetLength(0);i++)
-        {
-            for(int j = 0;j < RandomArr.GetLength(1);j++)
+            catch
             {
-                if(RandomArr[i,j] >= to1 && RandomArr[i,j] <= to2)
-                {
-                    SortMatrix[k,index] = RandomArr[i,j];
-                    index++;
-                }
-            }
-        }
-        to1++;
-        to2++;
-        index = 0;
-
-    }
-
-
-    return SortMatrix;
-
-}
-
-
-double[,] double_arr = RandomGenerator(from,to,size);
-
-PrintFunction(double_arr);
-
-Console.WriteLine(TestFunction(double_arr));
-
-double[,] double_sort_matrix = SortMatrix(double_arr,from,to);
-
-PrintFunction(double_sort_matrix);
-
-Console.WriteLine(TestFunction(double_sort_matrix));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//задача на сортировку дробной матрицы по целому числу
-/*
-Console.WriteLine("Введите диапазон от: ");
-
-int from = int.Parse(Console.ReadLine()!);
-
-Console.WriteLine("Введите диапазон до: ");
-
-int to = int.Parse(Console.ReadLine()!);
-
-Console.WriteLine("Введите размер матрицы: ");
-
-int size = int.Parse(Console.ReadLine()!);
-
-double[,] RandomGenerator(int from,int to,int size)
-{
-    
-    Random random = new Random();
-    double min = from;
-    double max = to;
-    double range = max - min;
-    double[,] double_arr = new double[size,size];
-    for (int i = 0; i < double_arr.GetLength(0); i++)
-    {
-        for(int j = 0;j < double_arr.GetLength(1);j++)
-        {
-            double sample = random.NextDouble();
-            double scaled = (sample * range) + min;
-            double_arr[i,j] = (float)scaled;
-
-        }
-        
-    }
-    return double_arr;
-}
-
-void PrintFunction(double[,] double_arr)
-{
-    for(int i = 0;i < double_arr.GetLength(0);i++)
-    {
-        Console.Write($"Строка {i + 1} " + "    ");
-        for(int j = 0;j < double_arr.GetLength(1);j++)
-        {
-            if (double_arr[i,j] != 0)
-                Console.Write(double_arr[i,j] + "    ");
-        }
-        Console.WriteLine();
-        
-    }
-}
-
-double[,] SortFunction(double[,] RandomArr,double from,double to,int size,int to1)
-{
-    
-    double range3 = from;
-    double range4 = from + 1.0;
-    int[] size_index = new int[to1 - 1];
-    int size_of_row = 0;
-    for(int k = 0;k < to1 - 1;k++)
-    {
-        for(int i = 0;i < RandomArr.GetLength(1);i++)
-        {
-            for(int j = 0;j < RandomArr.GetLength(1);j++)
-            {
-                if (RandomArr[i,j] >= range3 && RandomArr[i,j] <= range4)
-                    size_of_row++;
-
+                Console.WriteLine("Ты ввел не корректный тип данных,будь внимателен");
             }
 
-
+            
+                        
         }
-        range3 += 1.0;
-        range4 += 1.0;
-        size_index[k] = size_of_row;
-        size_of_row = 0;
-        
-    }
-    int max = size_index.Max();
-    double[,] SortedArray = new double[to1 - 1,max];
-
-    range3 = from;
-    range4 = from + 1;
-    int current_index = 0;
-    for(int k = 0;k < to1 - 1;k++)
-    {
-        for(int i = 0;i < RandomArr.GetLength(1);i++)
-        {
-            for(int j = 0;j < RandomArr.GetLength(1);j++)
-            {
-                if (RandomArr[i,j] >= range3 && RandomArr[i,j] <= range4)
-                {
-
-                    SortedArray[k,current_index] = RandomArr[i,j];
-                    
-
-                    current_index++;
-                }
-
-            }
-
-
-        }
-        current_index = 0;
-        range3 += 1.0;
-        range4 += 1.0;
-    }
-    return SortedArray;
-        
-        
+    }    
 }
 
 
-double[,] RandomArr = RandomGenerator(from,to,size);
-
-PrintFunction(RandomArr);
-
-double from2 = from;
-double to2 = to;
-
-double[,] SortArr = SortFunction(RandomArr,from2,to2,size,to);
-
-Console.WriteLine();
-PrintFunction(SortArr);
 
 
 
-
-Random rnd = new();
-Console.WriteLine("Введите диапазон от: ");
-int from = int.Parse(Console.ReadLine()!);
-Console.WriteLine("Введите диапазон до: ");
-int to = int.Parse(Console.ReadLine()!);
-int input_num = rnd.Next(from,to + 1);
-Console.WriteLine(input_num);
-
-
-
-
-int GuessFunction(int from,int to,int input_num)
-{
-    int attempt = 1;
-    int[] input_num_arr = new int[to + 1];
-    for(int i = 0;i < input_num_arr.Length;i++)
-    {
-        input_num_arr[i] = i;
-        //Console.Write(input_num_arr[i] + " ");
-    }
-    Console.WriteLine();
-
-    int start = from;
-    int end = input_num_arr.Length - 1;
-    while( start <= end)
-    {
-        int mid = (start + end) / 2;
-        if (input_num_arr[mid] == input_num)
-        {
-            Console.WriteLine(input_num_arr[mid]);
-            Console.WriteLine($"программа угадала число с {attempt} попытки");
-            return mid;
-        }
-        else if(input_num_arr[mid] > input_num)
-        {
-            end = mid - 1;
-            attempt++;
-        }
-        else if(input_num_arr[mid] < input_num)
-        {
-            start = mid + 1;
-            attempt++;
-        }
-    }
-    return 0;
-}
-
-
-GuessFunction(from,to,input_num);
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+int[] game_score = new int[100];
+game_score[complete_game] = simple_game(game_score);
 
 
 
