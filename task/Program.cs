@@ -1,9 +1,20 @@
 ﻿
-string[] figure_white = new string[8]{"ладья_бел","конь_бел","слон_бел","король_бел","ферзь_бел","слон1_бел","конь1_бел","ладья1_бел"};
-string[] figure_black = new string[8]{"ладья_черн","конь_черн","слон_черн","король_черн","ферзь_черн","слон1_черн","конь1_черн","ладья1_черн"};
-string[] pawn_white = new string[8]{"пешка_бел1","пешка_бел2","пешка_бел3","пешка_бел4","пешка_бел5","пешка_бел6","пешка_бел7","пешка_бел8"};
-string[] pawn_black = new string[8]{"пешка_черн1","пешка_черн2","пешка_черн3","пешка_черн4","пешка_черн5","пешка_черн6","пешка_черн7","пешка_черн8"};
+string[] figure_white = new string[8]{"лб","кб","сб","крб","фб","сб1","кб1","лб1"};
+string[] figure_black = new string[8]{"лч","кч","сч","крч","фч","сч1","кч1","лч1"};
+string[] pawn_white = new string[8]{"пб1","пб2","пб3","пб4","пб5","пб6","пб7","пб8"};
+string[] pawn_black = new string[8]{"пч1","пч2","пч3","пч4","пч5","пч6","пч7","пч8"};
 char[] letters = new char[8]{'A','B','C','D','E','F','G','H'};
+
+
+
+
+
+
+
+
+
+
+
 
 string[,] GenerateFunction(string[] figure_white,string[] figure_black,string[] pawn_white,string[] pawn_black)
 {
@@ -27,14 +38,15 @@ string[,] GenerateFunction(string[] figure_white,string[] figure_black,string[] 
         }
         if(index >= 6)
         {
-            for(int j = 0;j < figure_black.Length;j++)
-            {
-                field[index,j] = figure_black[j];
-            }
-            index++;
+            
             for(int h = 0;h < pawn_black.Length;h++)
             {
                 field[index,h] = pawn_black[h];
+            }
+            index++;
+            for(int j = 0;j < figure_black.Length;j++)
+            {
+                field[index,j] = figure_black[j];
             }
             index++;
         }
@@ -55,39 +67,47 @@ string[,] GenerateFunction(string[] figure_white,string[] figure_black,string[] 
 
 void PrintFunction(string[,] field,char[] letters)
 {
-    Console.WriteLine("    " + string.Join("            ",letters));
+    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.WriteLine("  " + string.Join("      ",letters));
     for(int i = 0;i < field.GetLength(1);i++)
     {
-        Console.Write("---------------");
+        
+        Console.Write("-------");
     }
-
+    Console.ResetColor();
     Console.WriteLine();
-    int size_pix = 120;
+    int size_pix = 53;
     int str_length_pix = 0;
-    int number_of_spaces_in_zero = 8;
+    int number_of_spaces_in_zero = 6;
     int number_of_spaces_in_shapes = 4;
     for(int i = 0;i < field.GetLength(0);i++)
     {   
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.Write(i + 1);
         Console.Write("|");
+        Console.ResetColor();
+        
         for(int j = 0;j < field.GetLength(1);j++)
         {
             if(j + 1 != field.GetLength(1))
             {
                 if(field[i,j] == "o")
                 {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.Write(field[i,j]);
-                    Console.Write("        ");
+                    Console.Write("      ");
                     str_length_pix += field[i,j].Length + number_of_spaces_in_zero;
 
                 }
                 else
                 {
 
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.Write(field[i,j] + "    ");
                     str_length_pix += field[i,j].Length + number_of_spaces_in_shapes;
+                    Console.ResetColor();
+
                 }
-                
             }
             else if(j + 1 == field.GetLength(1))
             {
@@ -99,27 +119,38 @@ void PrintFunction(string[,] field,char[] letters)
                 }
                 else
                 {
+
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.Write(field[i,j]);
                     str_length_pix += field[i,j].Length;
+                    Console.ResetColor();
                 }
                 
             }
+            
         }
+        Console.ResetColor();
         for(int k = 0;k < (size_pix - str_length_pix);k++)
         {
             Console.Write(" ");
         }
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.Write("|");
         Console.WriteLine(i + 1);
         str_length_pix = 0;
+        Console.ResetColor();
+
     }
     
     for(int j = 0;j < field.GetLength(1);j++)
     {
-        Console.Write("---------------");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("-------");
+        
     }
+    Console.ResetColor();
     Console.WriteLine();
-    Console.WriteLine("    " + string.Join("            ",letters));
+    Console.WriteLine("  " + string.Join("      ",letters));
     
 }
 
@@ -127,7 +158,8 @@ int size_all_figure = figure_white.Length + figure_black.Length + pawn_white.Len
 string[] all_figure = new string[size_all_figure];
 
 int index2 = 0;
-
+string[] beaten_figure = new string[all_figure.Length];
+int index_beaten = 0;
 while(index2 < size_all_figure)
 {
     for(int i = 0;i < figure_white.Length;i++)
@@ -155,63 +187,208 @@ while(index2 < size_all_figure)
 string[,] field = GenerateFunction(figure_white,figure_black,pawn_white,pawn_black);
 PrintFunction(field,letters);
 
-string[] chees(string[,] field,char[] letters,string[] all_figure)
+string[] chees(string[,] field,char[] letters,string[] all_figure,string[] figure_white,string[] figure_black,string[] pawn_white,string[] pawn_black)
 {
-    string[] chess_part = new string[2];
+    string[] chess_part = new string[1000];
     string[,] move_arr = field;
+    int index_player = 1;
+    int index_move = 0;
+    bool beaten_tf = true;
+    int index2 = 0;
+    
     while(true)
     {
-
-        int index_player = 0;
-        Console.WriteLine($"Ход игрока {index_player}");
-        Console.WriteLine("Введите какой фигурой хотите походить: ");
-        string figure_input = Console.ReadLine()!;
-        int figure_current = 0;
-        int figure_current_str = 0;
-        Console.WriteLine("Введите на какую позицию хотите походить: ");
-        char position = char.Parse(Console.ReadLine()!);
-        int move = 0;
-        Console.WriteLine("На какой строке: ");
-        int move_str = int.Parse(Console.ReadLine()!);
-
-        for(int k = 0;k < field.GetLength(0);k++)
-        {
-            for(int i = 0;i < field.GetLength(1);i++)
+        try{
+            int index13 = 0;
+            int index14 = 0;
+            if(index_player % 25 == 0)
             {
-                if(field[k,i] == figure_input)
-                    figure_current_str = k;
+                Console.WriteLine("Хотите взять ничью");
+                string surrender = Console.ReadLine()!;
+                surrender.ToLower();
+                if(surrender == "да");
+                    return chess_part;
             }
-        }
-        
-        for(int i = 0;i < field.GetLength(0);i++)
-        {
-            for(int j = 0;j < field.GetLength(1);j++)
+            bool whites_move = true;
+            bool black_moves = true;
+
+            if(index_player % 2 != 0)
             {
-                if(figure_input == field[i,j])
-                    figure_current = j;
+                Console.WriteLine($"Ход игрока с белыми фигурами");
+            }
+            else
+            {
+                Console.WriteLine($"Ход игрока с черными фигурами");
+            }
+            Console.WriteLine("Введите какой фигурой хотите походить: ");
+            string figure_input = Console.ReadLine()!;
+            figure_input.ToLower();
+            if(index_player % 2 == 0)
+            {
+                foreach(char e in figure_input)
+                {
+                    if(e == 'б')
+                    {
+                        Console.WriteLine($"Error:эта фигура пренодлежит игроку {1},выберите другую"); 
+                        whites_move = false;         
+                    }
+                }
+                if(whites_move == false)
+                {
+                    continue;
+                }
 
             }
-        }
-        for(int h = 0;h < letters.Length;h++)
-        {
-            if(position == letters[h])
+            else
             {
-                move = h;
+                foreach(char e in figure_input)
+                {
+                    if(e == 'ч')
+                    {
+                        Console.WriteLine($"Error:эта фигура пренодлежит игроку {2},выберите другую"); 
+                        black_moves = false;         
+                    }
+                }
+                if(black_moves == false)
+                {
+                    continue;
+                }
+
             }
+
+            int figure_current = 0;
+            int figure_current_str = 0;
+            Console.WriteLine("Введите на какую позицию хотите походить: ");
+            char position = char.Parse(Console.ReadLine()!);
+            char.ToUpper(position);
+            int move = 0;
+            
+            Console.WriteLine("На какой строке: ");
+            int move_str = int.Parse(Console.ReadLine()!);
+            if(index_player % 2 != 0)
+            {
+                for(int m = 0;m < figure_white.Length;m++)
+                {
+                    if(move_arr[move_str - 1,move] == figure_white[m] || move_arr[move_str - 1,move] == pawn_white[m])
+                        index13 = 1;
+                }
+            }
+            else
+            {
+                for(int m = 0;m < figure_black.Length;m++)
+                {
+                    if(move_arr[move_str - 1,move] == figure_black[m] || move_arr[move_str - 1,move] == pawn_black[m])
+                        index14 = 1;
+                }
+            }
+            if(index13 == 1)
+            {
+                Console.WriteLine("Белые фигуры не могут бить белые фигуры");
+                continue;
+            }
+            if(index14 == 1)
+            {
+                Console.WriteLine("Черные фигуры не могут бить черные фигуры");
+                continue;
+            }
+            for(int n = 0;n < beaten_figure.Length;n++)
+            {
+                
+                if(beaten_figure[n] == figure_input)
+                {
+                    beaten_tf = false;
+                }
+            }
+            if(beaten_tf == false)
+            {
+                Console.WriteLine("Вы ввели побитую фигуру");
+                PrintFunction(move_arr,letters);
+                continue;
+            }
+            for(int hh = 0;hh < all_figure.Length;hh++)
+            {
+                if(figure_input == all_figure[hh])
+                {
+                    index2 = 1;
+                }
+            }
+            if(index2 == 0)
+            {
+                Console.WriteLine("Вы ввели фигуры которой нет");
+                PrintFunction(move_arr,letters);
+                continue;
+            }
+            for(int k = 0;k < field.GetLength(0);k++)
+            {
+                for(int i = 0;i < field.GetLength(1);i++)
+                {
+                    if(field[k,i] == figure_input)
+                        figure_current_str = k;
+                }
+            }
+            
+            for(int i = 0;i < field.GetLength(0);i++)
+            {
+                for(int j = 0;j < field.GetLength(1);j++)
+                {
+                    if(figure_input == field[i,j])
+                        figure_current = j;
+
+                }
+            }
+            for(int h = 0;h < letters.Length;h++)
+            {
+                if(position == letters[h])
+                {
+                    move = h;
+                }
+            }
+    
+            for(int l = 0;l < all_figure.Length;l++)
+            {
+                if(move_arr[move_str - 1,move] == all_figure[l])
+                {
+                    if(move_arr[move_str - 1,move] != figure_input)
+                    {
+                        beaten_figure[index_beaten] = move_arr[move_str - 1,move];
+                        move_arr[move_str - 1,move] = "o";
+                        
+                    }
+                }
+            }
+            string temp = move_arr[move_str - 1,move];
+            move_arr[move_str - 1,move] = move_arr[figure_current_str,figure_current];
+            move_arr[figure_current_str,figure_current] = temp;
+            PrintFunction(move_arr,letters);
+            index2 = 0;
+            beaten_tf = true;
+            Console.Write("ХОДЫ [ ");
+            if(index_player % 2 != 0)
+                chess_part[index_move] = ($"игрок белый, фигуры: {figure_input} - {position}{move_str}  ");
+            else
+                chess_part[index_move] = ($"игрок черный, фигуры: {figure_input} - {position}{move_str}  ");
+            index_move++;
+            index_player++;
+            Console.Write(string.Join("",chess_part));
+            Console.WriteLine("]");
+                        
+            Console.Write("побитые фигуры[");
+            Console.Write(string.Join("",beaten_figure));
+            Console.WriteLine("]");
+
         }
-        
-        string temp = move_arr[move_str - 1,move];
-        move_arr[move_str - 1,move] = move_arr[figure_current_str,figure_current];
-        move_arr[figure_current_str,figure_current] = temp;
-        PrintFunction(move_arr,letters);
-        index_player = 1;
+        catch
+        {
+            Console.WriteLine("Вы вышли за пределы поля");
+            PrintFunction(move_arr,letters);
+        }
 
     }
     return chess_part;
 }
 
 
-chees(field,letters,all_figure);
+chees(field,letters,all_figure,figure_white,figure_black,pawn_white,pawn_black);
 
 
 
