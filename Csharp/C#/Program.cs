@@ -2275,8 +2275,6 @@ double[,] SortFunction(double[,] RandomArr,double from,double to,int size,int to
                 {
 
                     SortedArray[k,current_index] = RandomArr[i,j];
-                    
-
                     current_index++;
                 }
 

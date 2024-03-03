@@ -1,4 +1,285 @@
 ﻿
+int size = 10;
+
+
+string[,] GenerateFisrtPlayer(int size)
+{
+    string[,] field_first_player = new string[size,size];
+    //генерация поля
+    for(int i = 0;i < size;i++)
+    {
+        for(int j = 0;j < size;j++)
+        {
+            field_first_player[i,j] = "o";
+        }
+    }
+    Random rnd1 = new();
+    Random rnd2 = new();
+    
+    //генерация одно-палубного корабля
+    int one_ship = 0;
+    const int max_one_ship = 4;
+
+    for(int k = 0;k < size;k++)
+    {
+        int random_position_x = rnd2.Next(0,size);
+        int random_position_y = rnd1.Next(random_position_x,random_position_x + 2);
+        for(int j = 0;j < size;j++)
+        {
+            if(j == random_position_x)
+            {
+                field_first_player[k,j] = "S";
+                one_ship++;
+            }
+            else if(one_ship >= max_one_ship)
+                break;
+        }
+    }
+
+    //генерация двух-палубного корабля
+    int two_ship = 0;
+    const int max_two_ship = 12;
+
+    for(int l = 0;l < size;l += 2)
+    {
+        int random_position_x1 = rnd2.Next(0,size);
+        int random_position_y1 = rnd1.Next(random_position_x1 + 1,random_position_x1 + 1);
+        for(int ll = 0;ll < size;ll++)
+        {
+
+            if(ll == random_position_x1){
+                field_first_player[l,ll] = "S";
+                two_ship += 1;
+            }
+
+            else if(ll == random_position_y1){
+                field_first_player[l,ll] = "S";
+                two_ship += 1;
+            }
+
+            else if(two_ship >= max_two_ship)
+                break;
+
+        } 
+    }
+    return field_first_player;
+}
+
+
+void PrintFunction(string[,] field,int[] int_field)
+{
+    Console.Write("   ");
+    Console.WriteLine(string.Join("  ",int_field));
+    for(int i = 0;i < field.GetLength(0);i++)
+    {
+        Console.Write(int_field[i] + "  ");
+        for(int j = 0;j < field.GetLength(1);j++)
+        {
+            if(field[i,j] == "S")
+            {
+                
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(field[i,j] + "  ");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write(field[i,j] + "  ");
+                Console.ResetColor();
+            }
+            
+        }
+        Console.Write(int_field[i]);
+        Console.WriteLine();
+    }
+    Console.Write("   ");
+    Console.WriteLine(string.Join("  ",int_field));
+}
+
+int[] int_field = new int[10]{0,1,2,3,4,5,6,7,8,9};
+string ShipGame(string[,] first_player_field,string[,] second_player_field)
+{
+    int index_player = 1;
+    int ship_first = 0;
+    int ship_second = 0;
+    for(int i = 0;i < first_player_field.GetLength(0);i++)
+    {
+        for(int j = 0;j < first_player_field.GetLength(1);j++)
+        {
+            if(first_player_field[i,j] == "S")
+                ship_first++;
+        }
+    }
+    for(int k = 0;k < second_player_field.GetLength(0);k++)
+    {
+        for(int l = 0;l < second_player_field.GetLength(1);l++)
+        {
+            if(second_player_field[k,l] == "S")
+                ship_second++;
+        }
+    }
+    while(true)
+    {
+        try{
+            
+            if(index_player % 2 != 0){
+                Console.WriteLine("Ход игрока №1");
+                Console.WriteLine("Ваше поле ");
+                PrintFunction(first_player_field,int_field);
+            }  
+            else{
+                Console.WriteLine("Ход игрока №2");
+                Console.WriteLine("Ваше поле ");
+                PrintFunction(second_player_field,int_field);
+            }
+            
+            Console.Write("Выберите куда хотите выстрелить: ");
+            int row_shot = int.Parse(Console.ReadLine()!);
+            Console.Write("Выберите куда хотите выстрелить по строкам: ");
+            int str_shot = int.Parse(Console.ReadLine()!);
+            if(index_player % 2 != 0)
+            {
+                if(second_player_field[str_shot,row_shot] == "S")
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Ты попал,ходи еще раз");
+                    second_player_field[str_shot,row_shot] = "o";
+                    ship_second--;
+                }
+                else if(second_player_field[str_shot,row_shot] == "o")
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Ты промахнулся");
+                    index_player++;
+                }
+            }
+            else
+            {
+                if(first_player_field[str_shot,row_shot] == "S")
+                {
+                    Console.WriteLine("Ты попал,ходи еще раз");
+                    first_player_field[str_shot,row_shot] = "o";
+                    ship_first--;
+                }
+                else if(first_player_field[str_shot,row_shot] == "o")
+                {
+                    Console.WriteLine("Ты промахнулся");
+                    index_player++;
+                } 
+            }
+            if(ship_first == 0)
+            {
+                return "Бой окончен,выиграл игрок №2";
+            }
+            else if(ship_second == 0){
+                return "Бой окончен,выиграл игрок №1";
+            }
+
+        }
+        catch{
+            Console.WriteLine("Ты вышел за пределы поля");
+        }
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+string[,] first_player_field = GenerateFisrtPlayer(size);
+string[,] second_player_field = GenerateFisrtPlayer(size);
+ShipGame(first_player_field,second_player_field);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 string[] figure_white = new string[8]{"лб","кб","сб","крб","фб","сб1","кб1","лб1"};
 string[] figure_black = new string[8]{"лч","кч","сч","крч","фч","сч1","кч1","лч1"};
 string[] pawn_white = new string[8]{"пб1","пб2","пб3","пб4","пб5","пб6","пб7","пб8"};
@@ -9,16 +290,8 @@ char[] letters = new char[8]{'A','B','C','D','E','F','G','H'};
 
 
 
-
-
-
-
-
-
-
 string[,] GenerateFunction(string[] figure_white,string[] figure_black,string[] pawn_white,string[] pawn_black)
 {
-    int size_field = 8;
     string[,] field = new string[size_field,size_field];
     int index = 0;
     while(index < size_field)
@@ -154,6 +427,7 @@ void PrintFunction(string[,] field,char[] letters)
     
 }
 
+
 int size_all_figure = figure_white.Length + figure_black.Length + pawn_white.Length + pawn_black.Length;
 string[] all_figure = new string[size_all_figure];
 
@@ -206,7 +480,7 @@ string[] chees(string[,] field,char[] letters,string[] all_figure,string[] figur
                 Console.WriteLine("Хотите взять ничью");
                 string surrender = Console.ReadLine()!;
                 surrender.ToLower();
-                if(surrender == "да");
+                if(surrender == "да")
                     return chess_part;
             }
             bool whites_move = true;
@@ -225,6 +499,7 @@ string[] chees(string[,] field,char[] letters,string[] all_figure,string[] figur
             figure_input.ToLower();
             if(index_player % 2 == 0)
             {
+            
                 foreach(char e in figure_input)
                 {
                     if(e == 'б')
@@ -262,6 +537,13 @@ string[] chees(string[,] field,char[] letters,string[] all_figure,string[] figur
             char position = char.Parse(Console.ReadLine()!);
             char.ToUpper(position);
             int move = 0;
+            for(int h = 0;h < letters.Length;h++)
+            {
+                if(position == letters[h])
+                {
+                    move = h;
+                }
+            }
             
             Console.WriteLine("На какой строке: ");
             int move_str = int.Parse(Console.ReadLine()!);
@@ -336,13 +618,7 @@ string[] chees(string[,] field,char[] letters,string[] all_figure,string[] figur
 
                 }
             }
-            for(int h = 0;h < letters.Length;h++)
-            {
-                if(position == letters[h])
-                {
-                    move = h;
-                }
-            }
+
     
             for(int l = 0;l < all_figure.Length;l++)
             {
@@ -384,7 +660,6 @@ string[] chees(string[,] field,char[] letters,string[] all_figure,string[] figur
         }
 
     }
-    return chess_part;
 }
 
 
@@ -392,6 +667,7 @@ chees(field,letters,all_figure,figure_white,figure_black,pawn_white,pawn_black);
 
 
 
+*/
 
 
 
