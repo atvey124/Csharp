@@ -1,1130 +1,496 @@
-﻿
-int size = 10;
+﻿Console.WriteLine("В данной игре тебе предстоит не умереть на минном поле,если наступаешь на бомбу 'X' - проигрываешь,победа засчитывается тогда когда открыл все поле");
+Console.WriteLine();
+Console.Write("Выберите сложность(сложная,нормальная,легкая,экстремальная,невозможная): ");
+string complexity = Console.ReadLine()!;
+int difficult = 0;
+int size = 20;
 
-
-string[,] GenerateFisrtPlayer(int size)
+switch(complexity.Length)
 {
-    string[,] field_first_player = new string[size,size];
-    //генерация поля
-    for(int i = 0;i < size;i++)
-    {
-        for(int j = 0;j < size;j++)
-        {
-            field_first_player[i,j] = "o";
-        }
-    }
-    Random rnd1 = new();
-    Random rnd2 = new();
-    
-    //генерация одно-палубного корабля
-    int one_ship = 0;
-    const int max_one_ship = 4;
-
-    for(int k = 0;k < size;k++)
-    {
-        int random_position_x = rnd2.Next(0,size);
-        int random_position_y = rnd1.Next(random_position_x,random_position_x + 2);
-        for(int j = 0;j < size;j++)
-        {
-            if(j == random_position_x)
-            {
-                field_first_player[k,j] = "S";
-                one_ship++;
-            }
-            else if(one_ship >= max_one_ship)
-                break;
-        }
-    }
-
-    //генерация двух-палубного корабля
-    int two_ship = 0;
-    const int max_two_ship = 12;
-
-    for(int l = 0;l < size;l += 2)
-    {
-        int random_position_x1 = rnd2.Next(0,size);
-        int random_position_y1 = rnd1.Next(random_position_x1 + 1,random_position_x1 + 1);
-        for(int ll = 0;ll < size;ll++)
-        {
-
-            if(ll == random_position_x1){
-                field_first_player[l,ll] = "S";
-                two_ship += 1;
-            }
-
-            else if(ll == random_position_y1){
-                field_first_player[l,ll] = "S";
-                two_ship += 1;
-            }
-
-            else if(two_ship >= max_two_ship)
-                break;
-
-        } 
-    }
-    return field_first_player;
+    case 11:
+        difficult = 17;
+        break;
+    case 7:
+        difficult = 7;
+        break;
+    case 13:
+        difficult = 11;
+        break;
+    case 6:
+        difficult = 3;
+        break;
+    case 10:
+        difficult = 5;
+        break;
 }
 
 
-void PrintFunction(string[,] field,int[] int_field)
+char[,] GenerateFunction(int size,int difficult)
 {
-    Console.Write("   ");
-    Console.WriteLine(string.Join("  ",int_field));
-    for(int i = 0;i < field.GetLength(0);i++)
+    Random rnd1 = new();
+    char[,] RandomField = new char[size,size];
+    for(int i = 0; i < RandomField.GetLength(0);i++)
     {
-        Console.Write(int_field[i] + "  ");
-        for(int j = 0;j < field.GetLength(1);j++)
+        int index_bomb = 0;
+        while(index_bomb < difficult)
         {
-            if(field[i,j] == "S")
+            int random_position = rnd1.Next(0,size);
+            for(int j = 0;j < RandomField.GetLength(1);j++)
             {
-                
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(field[i,j] + "  ");
-                Console.ResetColor();
+                if(random_position == j)
+                {
+                    RandomField[i,j] = 'X';
+                    index_bomb++;
+                }
             }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write(field[i,j] + "  ");
-                Console.ResetColor();
-            }
-            
         }
-        Console.Write(int_field[i]);
+        for(int k = 0;k < RandomField.GetLength(1);k++)
+        {
+            if(RandomField[i,k] != 'X')
+                RandomField[i,k] = 'o';
+        }
+    }
+    
+    return RandomField;
+}
+
+string[] All_numbers = new string[20]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"};
+
+void PrintFunction(char[,] PlayField,string[] All_numbers)
+{
+    Console.ForegroundColor = ConsoleColor.DarkYellow;
+    Console.WriteLine("   " + string.Join("  ",All_numbers));
+    Console.ResetColor();
+    for(int i = 0;i < PlayField.GetLength(0);i++)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.Write(All_numbers[i] + "  ");
+        Console.ResetColor();
+        for(int j = 0;j < PlayField.GetLength(1);j++)
+        {
+            if(PlayField[i,j] == 'X')
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(PlayField[i,j] + "  ");
+                Console.ResetColor();
+            }
+            else if(PlayField[i,j] == 'o')
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(PlayField[i,j] + "  ");
+                Console.ResetColor();
+            }
+            else if(PlayField[i,j] == 'v')
+            {
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Write(PlayField[i,j] + "  ");
+                Console.ResetColor();
+            }
+        }
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.Write(All_numbers[i] + "  ");
+        Console.ResetColor();
         Console.WriteLine();
     }
-    Console.Write("   ");
-    Console.WriteLine(string.Join("  ",int_field));
+    Console.ForegroundColor = ConsoleColor.DarkYellow;
+    Console.Write("   " + string.Join("  ",All_numbers));
+    Console.ResetColor();
 }
 
-int[] int_field = new int[10]{0,1,2,3,4,5,6,7,8,9};
-string ShipGame(string[,] first_player_field,string[,] second_player_field)
-{
-    int index_player = 1;
-    int ship_first = 0;
-    int ship_second = 0;
-    for(int i = 0;i < first_player_field.GetLength(0);i++)
-    {
-        for(int j = 0;j < first_player_field.GetLength(1);j++)
-        {
-            if(first_player_field[i,j] == "S")
-                ship_first++;
-        }
-    }
-    for(int k = 0;k < second_player_field.GetLength(0);k++)
-    {
-        for(int l = 0;l < second_player_field.GetLength(1);l++)
-        {
-            if(second_player_field[k,l] == "S")
-                ship_second++;
-        }
-    }
-    while(true)
-    {
-        try{
-            
-            if(index_player % 2 != 0){
-                Console.WriteLine("Ход игрока №1");
-                Console.WriteLine("Ваше поле ");
-                PrintFunction(first_player_field,int_field);
-            }  
-            else{
-                Console.WriteLine("Ход игрока №2");
-                Console.WriteLine("Ваше поле ");
-                PrintFunction(second_player_field,int_field);
-            }
-            
-            Console.Write("Выберите куда хотите выстрелить: ");
-            int row_shot = int.Parse(Console.ReadLine()!);
-            Console.Write("Выберите куда хотите выстрелить по строкам: ");
-            int str_shot = int.Parse(Console.ReadLine()!);
-            if(index_player % 2 != 0)
-            {
-                if(second_player_field[str_shot,row_shot] == "S")
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Ты попал,ходи еще раз");
-                    second_player_field[str_shot,row_shot] = "o";
-                    ship_second--;
-                }
-                else if(second_player_field[str_shot,row_shot] == "o")
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Ты промахнулся");
-                    index_player++;
-                }
-            }
-            else
-            {
-                if(first_player_field[str_shot,row_shot] == "S")
-                {
-                    Console.WriteLine("Ты попал,ходи еще раз");
-                    first_player_field[str_shot,row_shot] = "o";
-                    ship_first--;
-                }
-                else if(first_player_field[str_shot,row_shot] == "o")
-                {
-                    Console.WriteLine("Ты промахнулся");
-                    index_player++;
-                } 
-            }
-            if(ship_first == 0)
-            {
-                return "Бой окончен,выиграл игрок №2";
-            }
-            else if(ship_second == 0){
-                return "Бой окончен,выиграл игрок №1";
-            }
 
+char[,] VoidFieldFunction(int size)
+{
+    char[,] VoidFieldF = new char[size,size];
+    for(int i = 0;i < VoidFieldF.GetLength(0);i++)
+    {
+        for(int j = 0;j < VoidFieldF.GetLength(1);j++)
+        {
+            VoidFieldF[i,j] = 'v'; 
         }
-        catch{
+            
+    }
+        
+    return VoidFieldF;
+}
+
+
+char[,] VoidField = VoidFieldFunction(size);
+
+
+
+void SapperFunction(char[,] PlayField,string[] All_numbers,char[,] VoidField)
+{
+
+    while(VoidField != PlayField)
+    {
+        PrintFunction(VoidField,All_numbers);
+        Console.WriteLine();
+        Console.Write("Выберите куда хотите походить по столбцам: ");
+        string InputRow = Console.ReadLine()!.ToUpper();
+        Console.Write("Выберите куда хотите походить по строкам: ");
+        string InputStr = Console.ReadLine()!.ToUpper();
+        int IndexRow = 0;
+        int IndexStr = 0;
+        int checkLetterRow = 0;
+        int checkLetterStr = 0;
+        for(int i = 0;i < All_numbers.Length;i++)
+        {
+            if(All_numbers[i] == InputRow){
+                IndexRow = i;
+            }
+                
+            else if(All_numbers[i] == InputStr){
+                IndexStr = i;
+            }
+            
+        }
+        
+        for(int k = 0;k < All_numbers.Length;k++)
+        {
+            if(All_numbers[k] == InputRow)
+                checkLetterRow = 1;
+     
+        }
+        for(int g = 0;g < All_numbers.Length;g++)
+        {
+            if(All_numbers[g] == InputStr)
+                checkLetterStr = 1;
+        }
+        if(checkLetterRow != 1 || checkLetterStr != 1)
+        {
             Console.WriteLine("Ты вышел за пределы поля");
+            continue;
         }
-
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-string[,] first_player_field = GenerateFisrtPlayer(size);
-string[,] second_player_field = GenerateFisrtPlayer(size);
-ShipGame(first_player_field,second_player_field);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-string[] figure_white = new string[8]{"лб","кб","сб","крб","фб","сб1","кб1","лб1"};
-string[] figure_black = new string[8]{"лч","кч","сч","крч","фч","сч1","кч1","лч1"};
-string[] pawn_white = new string[8]{"пб1","пб2","пб3","пб4","пб5","пб6","пб7","пб8"};
-string[] pawn_black = new string[8]{"пч1","пч2","пч3","пч4","пч5","пч6","пч7","пч8"};
-char[] letters = new char[8]{'A','B','C','D','E','F','G','H'};
-
-
-
-
-
-string[,] GenerateFunction(string[] figure_white,string[] figure_black,string[] pawn_white,string[] pawn_black)
-{
-    string[,] field = new string[size_field,size_field];
-    int index = 0;
-    while(index < size_field)
-    {
-        if(index <= 1)
+           
+        Console.WriteLine(IndexStr);
+        Console.WriteLine(IndexRow);
+        if(PlayField[IndexStr,IndexRow] == 'X')
         {
-            for(int i = 0;i < figure_white.Length;i++)
-            {
-                field[index,i] = figure_white[i];
-            }
-            index++;
-            for(int o = 0;o < pawn_white.Length;o++)
-            {
-                field[index,o] = pawn_white[o];
-            }
-            index++;
-        }
-        if(index >= 6)
-        {
-            
-            for(int h = 0;h < pawn_black.Length;h++)
-            {
-                field[index,h] = pawn_black[h];
-            }
-            index++;
-            for(int j = 0;j < figure_black.Length;j++)
-            {
-                field[index,j] = figure_black[j];
-            }
-            index++;
-        }
-        if(index > 1 && index < 6)
-        {
-            for(int l = 0;l < size_field;l++)
-            {
-                field[index,l] = "o";
-            }
-            index++;
-        }
-
-
-    }
-
-    return field;
-}
-
-void PrintFunction(string[,] field,char[] letters)
-{
-    Console.ForegroundColor = ConsoleColor.Blue;
-    Console.WriteLine("  " + string.Join("      ",letters));
-    for(int i = 0;i < field.GetLength(1);i++)
-    {
-        
-        Console.Write("-------");
-    }
-    Console.ResetColor();
-    Console.WriteLine();
-    int size_pix = 53;
-    int str_length_pix = 0;
-    int number_of_spaces_in_zero = 6;
-    int number_of_spaces_in_shapes = 4;
-    for(int i = 0;i < field.GetLength(0);i++)
-    {   
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.Write(i + 1);
-        Console.Write("|");
-        Console.ResetColor();
-        
-        for(int j = 0;j < field.GetLength(1);j++)
-        {
-            if(j + 1 != field.GetLength(1))
-            {
-                if(field[i,j] == "o")
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write(field[i,j]);
-                    Console.Write("      ");
-                    str_length_pix += field[i,j].Length + number_of_spaces_in_zero;
-
-                }
-                else
-                {
-
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(field[i,j] + "    ");
-                    str_length_pix += field[i,j].Length + number_of_spaces_in_shapes;
-                    Console.ResetColor();
-
-                }
-            }
-            else if(j + 1 == field.GetLength(1))
-            {
-                if(field[i,j] == "o")
-                {
-                    Console.Write(field[i,j]);
-                    str_length_pix += field[i,j].Length;
-
-                }
-                else
-                {
-
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(field[i,j]);
-                    str_length_pix += field[i,j].Length;
-                    Console.ResetColor();
-                }
-                
-            }
-            
-        }
-        Console.ResetColor();
-        for(int k = 0;k < (size_pix - str_length_pix);k++)
-        {
-            Console.Write(" ");
-        }
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.Write("|");
-        Console.WriteLine(i + 1);
-        str_length_pix = 0;
-        Console.ResetColor();
-
-    }
-    
-    for(int j = 0;j < field.GetLength(1);j++)
-    {
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.Write("-------");
-        
-    }
-    Console.ResetColor();
-    Console.WriteLine();
-    Console.WriteLine("  " + string.Join("      ",letters));
-    
-}
-
-
-int size_all_figure = figure_white.Length + figure_black.Length + pawn_white.Length + pawn_black.Length;
-string[] all_figure = new string[size_all_figure];
-
-int index2 = 0;
-string[] beaten_figure = new string[all_figure.Length];
-int index_beaten = 0;
-while(index2 < size_all_figure)
-{
-    for(int i = 0;i < figure_white.Length;i++)
-    {
-        all_figure[index2] = figure_white[i];
-        index2++;
-    }
-    for(int j = 0;j < figure_black.Length;j++)
-    {
-        all_figure[index2] = figure_black[j];
-        index2++;
-    }
-    for(int k = 0;k < pawn_black.Length;k++)
-    {
-        all_figure[index2] = pawn_white[k];
-        index2++;
-    }
-    for(int h = 0;h < pawn_black.Length;h++)
-    {
-        all_figure[index2] = pawn_black[h];
-        index2++;
-    }
-
-}
-string[,] field = GenerateFunction(figure_white,figure_black,pawn_white,pawn_black);
-PrintFunction(field,letters);
-
-string[] chees(string[,] field,char[] letters,string[] all_figure,string[] figure_white,string[] figure_black,string[] pawn_white,string[] pawn_black)
-{
-    string[] chess_part = new string[1000];
-    string[,] move_arr = field;
-    int index_player = 1;
-    int index_move = 0;
-    bool beaten_tf = true;
-    int index2 = 0;
-    
-    while(true)
-    {
-        try{
-            int index13 = 0;
-            int index14 = 0;
-            if(index_player % 25 == 0)
-            {
-                Console.WriteLine("Хотите взять ничью");
-                string surrender = Console.ReadLine()!;
-                surrender.ToLower();
-                if(surrender == "да")
-                    return chess_part;
-            }
-            bool whites_move = true;
-            bool black_moves = true;
-
-            if(index_player % 2 != 0)
-            {
-                Console.WriteLine($"Ход игрока с белыми фигурами");
-            }
-            else
-            {
-                Console.WriteLine($"Ход игрока с черными фигурами");
-            }
-            Console.WriteLine("Введите какой фигурой хотите походить: ");
-            string figure_input = Console.ReadLine()!;
-            figure_input.ToLower();
-            if(index_player % 2 == 0)
-            {
-            
-                foreach(char e in figure_input)
-                {
-                    if(e == 'б')
-                    {
-                        Console.WriteLine($"Error:эта фигура пренодлежит игроку {1},выберите другую"); 
-                        whites_move = false;         
-                    }
-                }
-                if(whites_move == false)
-                {
-                    continue;
-                }
-
-            }
-            else
-            {
-                foreach(char e in figure_input)
-                {
-                    if(e == 'ч')
-                    {
-                        Console.WriteLine($"Error:эта фигура пренодлежит игроку {2},выберите другую"); 
-                        black_moves = false;         
-                    }
-                }
-                if(black_moves == false)
-                {
-                    continue;
-                }
-
-            }
-
-            int figure_current = 0;
-            int figure_current_str = 0;
-            Console.WriteLine("Введите на какую позицию хотите походить: ");
-            char position = char.Parse(Console.ReadLine()!);
-            char.ToUpper(position);
-            int move = 0;
-            for(int h = 0;h < letters.Length;h++)
-            {
-                if(position == letters[h])
-                {
-                    move = h;
-                }
-            }
-            
-            Console.WriteLine("На какой строке: ");
-            int move_str = int.Parse(Console.ReadLine()!);
-            if(index_player % 2 != 0)
-            {
-                for(int m = 0;m < figure_white.Length;m++)
-                {
-                    if(move_arr[move_str - 1,move] == figure_white[m] || move_arr[move_str - 1,move] == pawn_white[m])
-                        index13 = 1;
-                }
-            }
-            else
-            {
-                for(int m = 0;m < figure_black.Length;m++)
-                {
-                    if(move_arr[move_str - 1,move] == figure_black[m] || move_arr[move_str - 1,move] == pawn_black[m])
-                        index14 = 1;
-                }
-            }
-            if(index13 == 1)
-            {
-                Console.WriteLine("Белые фигуры не могут бить белые фигуры");
-                continue;
-            }
-            if(index14 == 1)
-            {
-                Console.WriteLine("Черные фигуры не могут бить черные фигуры");
-                continue;
-            }
-            for(int n = 0;n < beaten_figure.Length;n++)
-            {
-                
-                if(beaten_figure[n] == figure_input)
-                {
-                    beaten_tf = false;
-                }
-            }
-            if(beaten_tf == false)
-            {
-                Console.WriteLine("Вы ввели побитую фигуру");
-                PrintFunction(move_arr,letters);
-                continue;
-            }
-            for(int hh = 0;hh < all_figure.Length;hh++)
-            {
-                if(figure_input == all_figure[hh])
-                {
-                    index2 = 1;
-                }
-            }
-            if(index2 == 0)
-            {
-                Console.WriteLine("Вы ввели фигуры которой нет");
-                PrintFunction(move_arr,letters);
-                continue;
-            }
-            for(int k = 0;k < field.GetLength(0);k++)
-            {
-                for(int i = 0;i < field.GetLength(1);i++)
-                {
-                    if(field[k,i] == figure_input)
-                        figure_current_str = k;
-                }
-            }
-            
-            for(int i = 0;i < field.GetLength(0);i++)
-            {
-                for(int j = 0;j < field.GetLength(1);j++)
-                {
-                    if(figure_input == field[i,j])
-                        figure_current = j;
-
-                }
-            }
-
-    
-            for(int l = 0;l < all_figure.Length;l++)
-            {
-                if(move_arr[move_str - 1,move] == all_figure[l])
-                {
-                    if(move_arr[move_str - 1,move] != figure_input)
-                    {
-                        beaten_figure[index_beaten] = move_arr[move_str - 1,move];
-                        move_arr[move_str - 1,move] = "o";
-                        
-                    }
-                }
-            }
-            string temp = move_arr[move_str - 1,move];
-            move_arr[move_str - 1,move] = move_arr[figure_current_str,figure_current];
-            move_arr[figure_current_str,figure_current] = temp;
-            PrintFunction(move_arr,letters);
-            index2 = 0;
-            beaten_tf = true;
-            Console.Write("ХОДЫ [ ");
-            if(index_player % 2 != 0)
-                chess_part[index_move] = ($"игрок белый, фигуры: {figure_input} - {position}{move_str}  ");
-            else
-                chess_part[index_move] = ($"игрок черный, фигуры: {figure_input} - {position}{move_str}  ");
-            index_move++;
-            index_player++;
-            Console.Write(string.Join("",chess_part));
-            Console.WriteLine("]");
-                        
-            Console.Write("побитые фигуры[");
-            Console.Write(string.Join("",beaten_figure));
-            Console.WriteLine("]");
-
-        }
-        catch
-        {
-            Console.WriteLine("Вы вышли за пределы поля");
-            PrintFunction(move_arr,letters);
-        }
-
-    }
-}
-
-
-chees(field,letters,all_figure,figure_white,figure_black,pawn_white,pawn_black);
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Console.WriteLine("Приветствую тебя,в данной игре тебе нужно угадать загаданное программой число,каждый раз когда ты угадаешь,тебе будет даваться столько очков,сколько чисел в диапазоне,цель - набрать 10000 очков.Так же на каждом уровне тебе будет даваться подсказка,чем дальше уровень тем подсказки разнообразнее,так же подсказка может быть не дана вовсе");
-
-int number_of_functions = 1;
-long FactorialFunction(int num)
-{
-    long sum = 0;
-    for(int i = 1;i < num - 1;i++)
-    {
-        sum += i * i + 1;
-    }
-    number_of_functions++;
-    return sum;
-}
-
-
-long SquareNum(int num)
-{
-    
-    number_of_functions++;
-    return num * num;
-}
-
-
-string SymbolsStr(int num)
-{
-    string str = "";
-    for(int i = 0;i < num - 1;i++)
-        str += "s";
-    number_of_functions++;
-    return str;
-}
-
-
-long four_dimensional_matrix(int num)
-{
-    number_of_functions++;
-    long num1 = num * num;
-    return num * num1;
-}
-
-
-int Corner(int num)
-{
-    number_of_functions++;
-    return num * 4;
-}
-
-
-int free_mode = 0;
-int complete_game = 0;
-
-int simple_game(int free_mode)
-{
-
-    Console.WriteLine();
-    Console.WriteLine();
-
-    int score = 0;
-    int complite_level = 1;
-    while(true)
-    {
-        while(true)
-        {
-            try
-            {
-
-                Random rnd3 = new();
-                int random_range = rnd3.Next(1,100);
-                int from = 0;
-                int to = 100 * random_range + 1;
-                Random rnd = new();
-                Console.Write("Введи количество попыток,каждая попытка отнимает одно очко: ");
-                int attempt = int.Parse(Console.ReadLine()!);
-
-                Console.WriteLine();
-                Console.WriteLine();
-
-                Console.WriteLine($"Текущий диапазон от {from} до {to}");
-                score = score - attempt;
-                int random_number = rnd.Next(from,to + 1);
-                Console.WriteLine(random_number);
-
-                Random rnd1 = new();
-                int size = rnd1.Next(1,number_of_functions + 1);
-
-                switch(size)
-                {
-                    case 1:
-                        Console.WriteLine($"ПОДСКАЗКА:число равно размерности трехмерной матрицы на {four_dimensional_matrix(random_number)} элементов");
-                        break;
-                    case 2:
-                        Console.WriteLine($"ПОДСКАЗКА:квадратом этого числа является: {SquareNum(random_number)}");
-                        break;
-                    case 3:
-                        Console.WriteLine($"ПОДСКАЗКА:факториалом этого числа равна сумма {FactorialFunction(random_number)} ");
-                        break;
-                    case 4:
-                        Console.WriteLine($"ПОДСКАЗКА:число равно символам в этой строке: {SymbolsStr(random_number)}");
-                        break;
-                    case 5:
-                        if(random_number % 4 == 0)
-                        {
-                            Console.WriteLine($"ПОДСКАЗКА:данное число представляет собой одну сторону квадрата,площадь которого {Corner(random_number)}");
-                        }
-                        break;   
-                }
-                if(complite_level % 3 == 0)
-                {
-                    Random rnd2 = new();
-                    int random_task = rnd2.Next(1,2 + 1);
-
-                    Console.WriteLine();
-                    Console.WriteLine();
-
-                    Console.WriteLine("Каждые три уровня будет даваться шанс заработать дополнительные очки(200),ответив на один вопрос");
-                    Console.WriteLine("Если же ты дашь не верный ответ,ты проиграешь");
-                    Console.WriteLine("Примешь ли ты участие(да/нет): ");
-                    string yes_no = Console.ReadLine()!;
-                    yes_no.ToLower();
-                    if(yes_no == "да")
-                    {
-
-                        switch(random_task)
-                        {
-                            case 1:
-                                Console.Write("чем в программирование является формула Эйлера,ответ должен состоять из одного слова: ");
-                                string answer = Console.ReadLine()!;
-                                answer.ToLower();
-                                if(answer == "цикл")
-                                {
-                                    Console.WriteLine("Поздравляю ты выиграл и заработал 200 очков");
-                                    score += 200;
-                                    Console.WriteLine($"Текущие очки {score}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Ты проиграл");
-                                    Console.WriteLine($"Всего очков ты набрал: {score}");
-                                    complete_game++;
-                                    return score;
-                                }
-                                break;
-                            case 2:
-                                Console.Write("Что такое http: в url адресе,ответ должен состоять из одного слово: ");
-                                string answer1 = Console.ReadLine()!;
-                                answer1.ToLower();
-                                if(answer1 == "протокол")
-                                {
-                                    Console.WriteLine("Поздравляю ты выиграл и заработал 200 очков");
-                                    score += 200;
-                                    Console.WriteLine($"Текущие очки {score}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Ты проиграл");
-                                    Console.WriteLine($"Всего очков ты набрал: {score}");
-                                    complete_game++;
-                                    return score;
-                                }
-                                break;
-                        }
-                    }
-
-                }
-                while(attempt > 0)
-                {
-                    try{
-                        Console.Write($"Угадай число(lv{complite_level}),осталось попыток -- {attempt}: ");
-                        
-                        int input_num = int.Parse(Console.ReadLine()!);
-                        if(input_num == random_number)
-                        {
-                            complite_level++;
-                            Console.WriteLine();
-                            Console.WriteLine($"Поздравляю,ты выиграл и перешёл на уровень {complite_level}");
-                            score += to;
-                            Console.WriteLine($"Текущий счет {score}");
-                                    
-                            break;
-                        }
-                        else if(input_num < random_number)
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine("Загаданное число больше");
-                            
-                            attempt--;
-                        }
-                        else if(input_num > random_number)
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine("Загаданное число меньше");
-                            attempt--;
-                        }
-                        Console.WriteLine();
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Ты ввел не корректный тип данных,будь внимателен");
-                    }
-                }
-
-                if(score >= 10000 && free_mode == 0)
-                {
-                    free_mode++;
-                    Console.WriteLine("Ты прошел игру,поздравляю");
-                    Console.WriteLine($"Всего очков ты набрал: {score}");
-                    Console.WriteLine("Хочешь продолжить в свободном режиме?(да/нет): ");
-                    string input_str = Console.ReadLine()!;
-                    if(input_str == "да")
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Игра окончена");
-                        complete_game++; 
-                        return score;
-                    }    
-                }
-                if(attempt == 0)
-                {
-                    Console.WriteLine($"Ты проиграл на уровне {complite_level},загаданное число - {random_number}");
-                    Console.WriteLine($"Набрав очков: {score}");
-                    Console.WriteLine("Хочешь продолжить(Да/Нет)?: ");
-                    string stop = Console.ReadLine()!;
-                    stop.ToLower();
-                    if(stop == "да")
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Всего очков ты набрал: {score}");
-                        complete_game++; 
-                        return score;
-                    }
-
-                }
-                
-            }
-
-            catch
-            {
-                Console.WriteLine("Ты ввел не корректный тип данных,будь внимателен");
-            }            
-        }
-    }    
-}
-
-
-
-simple_game(free_mode);
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-// простая задача на угадывание случайного числа
-Random random = new();
-Random random2 = new();
-int random1 = random.Next(1,101);
-int random3 = random2.Next(1,1001);
-int attempt = 10;
-int attempt1 = 15;
-int win = 0;
-int remaining_attempt = 1;
-int remaining_attempt1 = 1;
-while(attempt != 0)
-{ 
-    if (attempt > 4)
-    {
-        Console.Write($"У тебя осталось {attempt} попыток, ");
-        Console.Write("Введи загаданное число от 1 до 100: ");
-    } 
-    else if ( attempt <= 4)
-    {
-        Console.Write($"У тебя осталось {attempt} попытки, ");
-        Console.Write("Введи загаданное число от 1 до 100: ");
-
-    }
-    
-    try
-    {
-        int num_people = int.Parse(Console.ReadLine()!);
-        if (num_people <= 100)
-        {
-
-    
-            if (random1 != num_people)
-            {
-                if ( random1 > num_people)
-                {
-                    Console.WriteLine("Загаданое число больше");
-                    attempt--;
-                    remaining_attempt++;
-                }
-                else if ( random1 < num_people)
-                {
-                    Console.WriteLine("Загаданное число меньше");
-                    attempt--;
-                    remaining_attempt++;
-                }
-
-            }
-            else
-            {
-                Console.WriteLine($"Ты выиграл с {remaining_attempt} попытки ,загаданное число было {random1}!");
-                win++;
-                if (win == 1)
-                {  
-                    Console.WriteLine();
-                    Console.WriteLine("РАЗ УЖ ТЫ ВЫИГРАЛ,ПОПРОБУЙ ЭТО!!!");
-                    while ( attempt1 != 0)
-                    { 
-                        if (attempt1 > 4)
-                        {
-                            Console.Write($"У тебя осталось {attempt1} попыток, ");
-                            Console.Write("Введи загаданное число от 1 до 1000: ");
-                        }
-                        else if (attempt1 <= 4)
-                        {
-                            Console.Write($"У тебя осталось { attempt1} попытки, ");
-                            Console.Write("Введи загаданное число от 1 до 1000: ");
-                        }
-                        int num_people2 = int.Parse(Console.ReadLine()!);
-                        if (num_people2 <= 1000)
-                        {
-                    
-                              
-                            if (random3 != num_people2)
-                            {
-                                if ( random3 > num_people2)
-                                {
-                                    Console.WriteLine("Загаданное число больше");
-                                    attempt1--;
-                                    remaining_attempt1++;
-                                }
-                                else if ( random3 < num_people2)
-                                {
-                                    Console.WriteLine("Загаданное число меньше");
-                                    attempt1--;
-                                    remaining_attempt1++;
-                                }
-                            }
-                        else
-                        {
-                            Console.WriteLine($"Ты выиграл с {remaining_attempt1} попытки,загаданное число было {random3}! ");
-                            break;
-                        }
-                        }      
-                    else
-                    {
-                        Console.WriteLine("Ты ввел число больше чем диапазон угадывания ");
-                    }
-                
-                    
-                
-                
-
-                    }
-                    Console.WriteLine($"Ты не смог угадать число от 1 до 1000, загаданное число было {random3}");
-                    break;         
-
-                }
-            }
+            Console.Write("          ");
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.Write("Т    Ы    П    Р    О    И    Г    Р    А    Л");
+            Console.ResetColor();
+            Console.WriteLine();
+            Console.WriteLine();
+            PrintFunction(PlayField,All_numbers);
+            return;
         }
         else
         {
-            Console.WriteLine("Ты ввел число больше диапазона угадывания ");
+            
+            if(IndexStr + 1 == PlayField.GetLength(0))
+            {
+                for(int i = IndexStr - 2;i < IndexStr + 1;i++)
+                {
+                    if(IndexRow == 0)
+                    {
+                        for(int j = IndexRow;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow == 1)
+                    {
+                        for(int j = IndexRow - 1;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 1 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 1;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 2 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                }
+
+            }
+            else if(IndexStr + 2 == PlayField.GetLength(0))
+            {
+                for(int i = IndexStr - 2;i < IndexStr + 2;i++)
+                {
+                    if(IndexRow == 0)
+                    {
+                        for(int j = IndexRow;j < IndexRow + 1;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow == 1)
+                    {
+                        for(int j = IndexRow - 1;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 1 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 1;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 2 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    
+
+                }
+
+            }
+            else if(IndexStr == 0)
+            {
+                for(int i = IndexStr;i < IndexStr + 2;i++)
+                {
+                    if(IndexRow == 0)
+                    {
+                        for(int j = IndexRow;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow == 1)
+                    {
+                        for(int j = IndexRow - 1;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 1 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 1;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 2 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                }
+            }
+            else if(IndexStr == 1)
+            {
+                for(int i = IndexStr - 1;i < IndexStr + 2;i++)
+                {
+                    if(IndexRow == 0)
+                    {
+                        for(int j = IndexRow;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow == 1)
+                    {
+                        for(int j = IndexRow - 1;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 1 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 1;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 2 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                }
+            }
+            else if(IndexStr == 2)
+            {
+                for(int i = IndexStr - 2;i < IndexStr + 2;i++)
+                {
+                    if(IndexRow == 0)
+                    {
+                        for(int j = IndexRow;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow == 1)
+                    {
+                        for(int j = IndexRow - 1;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 1 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 1;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 2 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                }
+            }
+            else
+            {
+                for(int i = IndexStr - 2;i < IndexStr + 2;i++)
+                {
+                    if(IndexRow == 0)
+                    {
+                        for(int j = IndexRow;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow == 1)
+                    {
+                        for(int j = IndexRow - 1;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 1 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 1;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else if(IndexRow  + 2 == PlayField.GetLength(1))
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                    else
+                    {
+                        for(int j = IndexRow - 2;j < IndexRow + 2;j++)
+                            VoidField[i,j] = PlayField[i,j];
+                    }
+                }
+            }
+            
+
+
         }
+
     }
-    catch
-    {
-        Console.WriteLine("Вы ввели не тот тип данных(требуется 'int')");
-    }
+    Console.Write("          ");
+    Console.BackgroundColor = ConsoleColor.Green;
+    Console.Write("Т    Ы    В    Ы    И    Г    Р    А    Л");
+    Console.ResetColor();
+    Console.WriteLine();
+    Console.WriteLine();
+    PrintFunction(PlayField,All_numbers);
+    return;
+
 }
 
 
 
 
-*/
+
+
+
+
+
+char[,] PlayField = GenerateFunction(size,difficult);
+
+char[,] CopyPlayField = PlayField;
+
+SapperFunction(PlayField,All_numbers,VoidField);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

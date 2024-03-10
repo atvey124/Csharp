@@ -3,7 +3,6 @@ C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\bin\Debug\n
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\bin\Debug\net6.0\task.runtimeconfig.json
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\bin\Debug\net6.0\task.dll
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\bin\Debug\net6.0\task.pdb
-C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\task.csproj.AssemblyReference.cache
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\task.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\task.AssemblyInfoInputs.cache
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\task.AssemblyInfo.cs
@@ -13,3 +12,4 @@ C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\n
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\task.pdb
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\task.genruntimeconfig.cache
 C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\ref\task.dll
+C:\Users\Matvey\OneDrive\Рабочий стол\vscode project\task\obj\Debug\net6.0\task.sourcelink.json
