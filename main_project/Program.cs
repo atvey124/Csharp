@@ -44,10 +44,8 @@
             return first_data;
         }
         static void Main(string[] args){
-            while(true){
-                Student first_student = GetStudent();
-                first_student.PrintALlInfo();
-            }
+            Student first_student = GetStudent();
+            first_student.PrintALlInfo();
         }
     }
 }

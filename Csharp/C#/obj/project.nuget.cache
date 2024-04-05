@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "s/qaujYFLusz1LArL6qAmwQlLwkC4WLydFcMtLBasdnM1+VcFdgtX/cpl58GyJWFKbDr1BDnvTUtEnEBf8QDfw==",
+  "dgSpecHash": "EKJpVr4aFyH686pTzgY0po+GdHVtkHds+Rf0fSiqY5l7opa9uUwjjIdqKgiiv/U6IkucoKbuPltcgzUSkNwq1w==",
   "success": true,
   "projectFilePath": "C:\\Users\\Matvey\\OneDrive\\Рабочий стол\\vscode project\\Csharp\\C#\\C#.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Matvey\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.27\\microsoft.netcore.app.ref.6.0.27.nupkg.sha512",
+    "C:\\Users\\Matvey\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.27\\microsoft.windowsdesktop.app.ref.6.0.27.nupkg.sha512",
+    "C:\\Users\\Matvey\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.27\\microsoft.aspnetcore.app.ref.6.0.27.nupkg.sha512",
+    "C:\\Users\\Matvey\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.27\\microsoft.netcore.app.host.win-x64.6.0.27.nupkg.sha512"
+  ],
   "logs": []
 }
